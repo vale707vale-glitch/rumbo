@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RUMBO - Modulo 3: Donde quedo mi casa</title>
+  <meta name="theme-color" content="#0b2539">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="titulo">RUMBO</div>
+    <div class="sub">MODULO 3 &middot; DONDE QUEDO MI CASA</div>
+    <div class="spacer"></div>
+    <a href="index.html">Inicio</a>
+    <a href="juego.html">Jugar</a>
+    <a href="modulo1.html">Modulo 1</a>
+    <a href="modulo2.html">Modulo 2</a>
+    <a href="modulo3.html" class="activo">Modulo 3</a>
+    <a href="modulo4.html">Modulo 4</a>
+    <a href="mapa.html">Modo Viaje</a>
+  </header>
+
+  <div class="estado">
+    <span>RONDA <span class="num" id="ronda-actual">0</span>/<span id="ronda-total" class="mono">5</span></span>
+    <span>DISTANCIA <span class="num" id="dist-lectura">0 m</span></span>
+    <span>PUNTOS <span class="num" id="puntaje">0</span></span>
+  </div>
+
+  <main class="modulo3">
+
+    <section class="tarjeta fase" id="fase-inicial">
+      <h2>Donde quedo mi casa</h2>
+      <p class="blurb">
+        Mientras caminas, la app te frena de golpe y tenes que apuntar la
+        <b>parte trasera del telefono</b> (la camara) hacia el lugar donde
+        empezaste. Eso entrena tu "sentido de retorno" (el vector de casa).
+      </p>
+      <ul class="pasos">
+        <li>1. Marca el inicio (tu posicion actual).</li>
+        <li>2. Camina hasta que la app te avise PARADA.</li>
+        <li>3. Apunta la camara hacia el inicio y fija el rumbo.</li>
+        <li>4. Si la desviacion es de 15&deg; o menos, sumas puntos.</li>
+      </ul>
+      <button class="btn bronce" id="btn-iniciar">Marcar inicio y empezar</button>
+      <div class="aviso" id="aviso-sin-brujula" hidden>
+        Atencion: este navegador no reporta brujula. Anda a un celular para el
+        juego real; aca usamos la simulacion.
+      </div>
+    </section>
+
+    <section class="tarjeta fase" id="fase-caminar" hidden>
+      <h2>Camina</h2>
+      <p class="blurb" id="instruccion-caminar"></p>
+      <div class="distancia-grande mono" id="dist-grande">0 m</div>
+      <div class="hint">No mires mapas: confia en tu sentido. Te aviso cuando parar.</div>
+      <button class="btn" id="btn-medir-ahora">Ya estoy lejos, medir</button>
+    </section>
+
+    <section class="tarjeta fase" id="fase-parada" hidden>
+      <h2 class="parada-titulo">PARADA</h2>
+      <p class="blurb" id="parada-info">
+        Apunta la parte trasera del telefono (la camara) hacia donde empezaste.
+      </p>
+      <div class="compas-modo">
+        <div class="titulo">TU TELEFONO APUNTA A</div>
+        <svg id="gauge" viewBox="-110 -110 220 220" aria-label="Brujula en vivo">
+          <circle r="100" fill="var(--navy-2)" stroke="var(--bronce)" stroke-width="2"></circle>
+          <circle r="88" fill="none" stroke="var(--bronce)" stroke-width="1" stroke-dasharray="2 6"></circle>
+          <g id="ticks-gauge"></g>
+          <g id="letras-gauge"></g>
+          <g id="aguja-gauge" transform="rotate(0)">
+            <polygon points="0,-85 6,0 0,-6 -6,0" fill="var(--bronce-claro)"></polygon>
+            <polygon points="0,85 6,0 0,6 -6,0" fill="var(--navy-3)"></polygon>
+          </g>
+          <circle r="5" fill="var(--paper)" stroke="var(--navy)" stroke-width="2"></circle>
+        </svg>
+        <div class="lectura"><span id="gauge-lectura">--</span></div>
+        <div class="desviacion" id="desviacion">Desviacion: --</div>
+      </div>
+      <button class="btn bronce" id="btn-fijar">Fijar rumbo</button>
+    </section>
+
+    <section class="tarjeta fase" id="fase-resultado" hidden>
+      <h2>Ronda resuelta</h2>
+      <div class="resumen-filas" id="resultado-feedback"></div>
+      <button class="btn bronce" id="btn-siguiente">Seguir caminando</button>
+    </section>
+
+    <section class="tarjeta fase" id="fase-resumen" hidden>
+      <h2>Fin de la sesion</h2>
+      <div class="resumen-filas" id="resumen-filas"></div>
+      <button class="btn bronce" id="btn-repetir">Volver a empezar</button>
+    </section>
+
+    <section class="tarjeta sim" id="sim" hidden>
+      <h2>Simulacion (sin brujula)</h2>
+      <div class="hint">Arrastra para simular hacia donde apunta tu telefono.</div>
+      <input type="range" id="sim-slider" min="0" max="359" value="0" style="width:100%">
+      <div class="mono" id="sim-lectura">000&deg;</div>
+    </section>
+
+  </main>
+
+  <script src="js/base.js"></script>
+  <script src="js/modulo3.js"></script>
+</body>
+</html>

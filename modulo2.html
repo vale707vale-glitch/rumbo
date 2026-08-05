@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RUMBO - Modulo 2: El Radar Ciego</title>
+  <meta name="theme-color" content="#0b2539">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="titulo">RUMBO</div>
+    <div class="sub">MODULO 2 &middot; EL RADAR CIEGO</div>
+    <div class="spacer"></div>
+    <a href="index.html">Inicio</a>
+    <a href="juego.html">Jugar</a>
+    <a href="modulo1.html">Modulo 1</a>
+    <a href="modulo2.html" class="activo">Modulo 2</a>
+    <a href="modulo3.html">Modulo 3</a>
+    <a href="modulo4.html">Modulo 4</a>
+    <a href="mapa.html">Modo Viaje</a>
+  </header>
+
+  <div class="estado">
+    <span>RONDA <span class="num" id="ronda-actual">0</span>/<span id="ronda-total" class="mono">5</span></span>
+    <span>TRAMO <span class="num" id="tramo-actual">0</span>/<span id="tramo-total" class="mono">0</span></span>
+    <span>PUNTOS <span class="num" id="puntaje">0</span></span>
+  </div>
+
+  <main class="modulo2">
+
+    <section class="tarjeta fase" id="fase-inicial">
+      <h2>El Radar Ciego</h2>
+      <p class="blurb">
+        La app te dicta una <b>ruta a ciegas</b> ("caminá 12 pasos, gira 90&deg;
+        a la derecha, caminá 8"). La ejecutas contando pasos y giros con los
+        ojos cerrados, y al final medis tu error: a cuantos <b>metros</b> y
+        <b>grados</b> del objetivo real quedaste. Como un submarinista.
+      </p>
+      <ul class="pasos">
+        <li>1. Elegí tu largo de paso (aprox. 1 paso = 70 cm).</li>
+        <li>2. Marcá el inicio y te doy la ruta tramo por tramo.</li>
+        <li>3. Caminá contando pasos, sin mirar. Apretá PAR&Eacute; al fin de cada tramo.</li>
+        <li>4. Al llegar, la app mide tu error en metros y grados.</li>
+      </ul>
+      <div class="paso-opt">
+        <span>LARGO DE PASO</span>
+        <label><input type="radio" name="paso" value="0.60"> 60 cm</label>
+        <label><input type="radio" name="paso" value="0.70" checked> 70 cm</label>
+        <label><input type="radio" name="paso" value="0.80"> 80 cm</label>
+      </div>
+      <button class="btn bronce" id="btn-iniciar">Marcar inicio y empezar</button>
+      <div class="aviso" id="aviso-sin-gps" hidden>
+        Atencion: este navegador no reporta GPS. Anda a un celular al aire libre
+        para el juego real; aca usamos la simulacion.
+      </div>
+    </section>
+
+    <section class="tarjeta fase" id="fase-caminar" hidden>
+      <h2 id="ruta-titulo">Ruta</h2>
+      <div class="ruta" id="ruta-lista"></div>
+      <div class="hint">
+        Contá los pasos y los giros con los ojos cerrados o mirando de reojo.
+        No mires el mapa: confia en tu cuerpo.
+      </div>
+      <button class="btn bronce" id="btn-parar">PAR&Eacute;</button>
+      <button class="btn" id="btn-descartar">Descartar y rehacer la ruta</button>
+    </section>
+
+    <section class="tarjeta fase" id="fase-resultado" hidden>
+      <h2>Ronda resuelta</h2>
+      <div class="distancia-grande" id="error-distancia">-- m</div>
+      <div class="resumen-filas" id="resultado-feedback"></div>
+      <button class="btn bronce" id="btn-siguiente">Siguiente ronda</button>
+    </section>
+
+    <section class="tarjeta fase" id="fase-resumen" hidden>
+      <h2>Fin de la sesion</h2>
+      <div class="resumen-filas" id="resumen-filas"></div>
+      <button class="btn bronce" id="btn-repetir">Volver a empezar</button>
+    </section>
+
+    <section class="tarjeta sim" id="sim" hidden>
+      <h2>Simulacion (sin GPS)</h2>
+      <div class="hint">Simula donde te quedaste parado respecto del objetivo.</div>
+      <div class="paso-opt">
+        <span>ERROR EN DISTANCIA</span>
+        <input type="range" id="sim-dist" min="0" max="15" step="0.5" value="4" style="width:100%">
+        <div class="mono" id="sim-dist-lectura">4.0 m</div>
+      </div>
+      <div class="paso-opt">
+        <span>ERROR EN ANGULO</span>
+        <input type="range" id="sim-ang" min="-45" max="45" value="0" style="width:100%">
+        <div class="mono" id="sim-ang-lectura">0&deg;</div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="js/base.js"></script>
+  <script src="js/modulo2.js"></script>
+</body>
+</html>

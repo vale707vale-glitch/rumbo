@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RUMBO - Modo A: La Brujula del Turista</title>
+  <meta name="theme-color" content="#0b2539">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="titulo">RUMBO</div>
+    <div class="sub">MODA A &middot; LA BRUJULA DEL TURISTA</div>
+    <div class="spacer"></div>
+    <a href="index.html">Inicio</a>
+    <a href="juego.html" class="activo">Jugar</a>
+    <a href="modulo1.html">Modulo 1</a>
+    <a href="modulo2.html">Modulo 2</a>
+    <a href="modulo3.html">Modulo 3</a>
+    <a href="modulo4.html">Modulo 4</a>
+    <a href="mapa.html">Modo Viaje</a>
+  </header>
+
+  <div class="estado">
+    <span><span class="num" id="ronda-actual">0</span>/<span id="ronda-total" class="mono">0</span> RONDA</span>
+    <span>PUNTOS <span class="num" id="puntaje">0</span></span>
+    <span>MEJOR <span class="num" id="mejor">0</span></span>
+  </div>
+
+  <div class="mapa-layout">
+    <div id="mapa"></div>
+
+    <aside class="panel juego">
+      <h2>La Brujula del Turista</h2>
+
+      <div class="consigna" id="consigna">
+        <div class="hint">Cargando...</div>
+      </div>
+
+      <div class="compas-modo" id="zona-brujula">
+        <div class="titulo">APUNTA HACIA EL RUMBO</div>
+        <svg id="brujula" viewBox="-110 -110 220 220" aria-label="Brujula">
+          <circle r="100" fill="var(--navy-2)" stroke="var(--bronce)" stroke-width="2"></circle>
+          <circle r="88" fill="none" stroke="var(--bronce)" stroke-width="1" stroke-dasharray="2 6"></circle>
+          <g id="ticks-brujula"></g>
+          <g id="letras-brujula"></g>
+          <g id="aguja" transform="rotate(0)">
+            <polygon points="0,-85 6,0 0,-6 -6,0" fill="var(--bronce-claro)"></polygon>
+            <polygon points="0,85 6,0 0,6 -6,0" fill="var(--navy-3)"></polygon>
+          </g>
+          <circle r="5" fill="var(--paper)" stroke="var(--navy)" stroke-width="2"></circle>
+        </svg>
+        <div class="lectura">RUMBO: <span id="lectura-grados">000&deg;</span> <span id="lectura-cardinal">N</span></div>
+        <div class="cardinales-rapidos">
+          <button class="chip" data-g="0">N</button>
+          <button class="chip" data-g="90">E</button>
+          <button class="chip" data-g="180">S</button>
+          <button class="chip" data-g="270">O</button>
+        </div>
+      </div>
+
+      <button class="btn bronce" id="btn-confirmar">Confirmar rumbo</button>
+      <button class="btn papel" id="btn-siguiente" hidden>Siguiente</button>
+
+      <div class="resultado" id="resultado" hidden></div>
+
+      <div class="resumen" id="resumen" hidden>
+        <h3>Fin de la partida</h3>
+        <div class="resumen-filas" id="resumen-filas"></div>
+        <button class="btn bronce" id="btn-repetir">Jugar de nuevo</button>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/base.js"></script>
+  <script src="js/juego.js"></script>
+</body>
+</html>

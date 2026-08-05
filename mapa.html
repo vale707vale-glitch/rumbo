@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RUMBO - Modo Viaje</title>
+  <meta name="theme-color" content="#0b2539">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="titulo">RUMBO</div>
+    <div class="sub">MODO VIAJE &middot; MAPA ESQUELETO</div>
+    <div class="spacer"></div>
+    <a href="index.html">Inicio</a>
+    <a href="juego.html">Jugar</a>
+    <a href="modulo1.html">Modulo 1</a>
+    <a href="modulo2.html">Modulo 2</a>
+    <a href="modulo3.html">Modulo 3</a>
+    <a href="modulo4.html">Modulo 4</a>
+    <a href="mapa.html" class="activo">Modo Viaje</a>
+  </header>
+
+  <div class="estado">
+    <span><span class="num" id="cont-anclas">0</span> ANCLAS</span>
+    <span id="estado-modo">MAPA NORMAL</span>
+    <span id="estado-coord" class="mono">--</span>
+  </div>
+
+  <div class="mapa-layout">
+    <aside class="panel">
+      <h2>Tu zona</h2>
+      <div class="campo">
+        <input type="text" id="buscar" placeholder="Buscar barrio o direccion (ej. Palermo, Buenos Aires)">
+        <button class="btn papel" id="btn-buscar" title="Buscar">Ir</button>
+        <button class="btn papel" id="btn-loc" title="Usar mi ubicacion">GPS</button>
+      </div>
+
+      <h2>Anclas</h2>
+      <div class="hint">Elegi un tipo y toca el mapa para marcarlo.</div>
+      <div class="seleccion-tipo" id="seleccion-tipo">
+        <button class="chip activo" data-tipo="hotel"><span class="pto" style="background:#1f6fb2"></span>HOTEL</button>
+        <button class="chip" data-tipo="subte"><span class="pto" style="background:#2e8b57"></span>SUBTE</button>
+        <button class="chip" data-tipo="restaurante"><span class="pto" style="background:#c0392b"></span>RESTAURANTE</button>
+        <button class="chip" data-tipo="hito"><span class="pto" style="background:#c9a227"></span>HITO</button>
+      </div>
+      <div class="lista-anclas" id="lista-anclas">
+        <div class="vacio">Todavia no hay anclas.</div>
+      </div>
+
+      <h2>Mapa esqueleto</h2>
+      <div class="skeleton-info">
+        Borra los nombres de las calles y deja solo el laberinto. Funciona para la zona
+        visible en pantalla.
+      </div>
+      <button class="btn bronce" id="btn-esqueleto">Generar esqueleto</button>
+      <div class="barra-estado" id="barra-estado"></div>
+
+      <div class="leyenda" id="leyenda" hidden>
+        <div class="fila"><span class="muestra" style="background:#3a3a3a"></span><span>AVENIDAS</span><span class="tipo">primary/trunk</span></div>
+        <div class="fila"><span class="muestra" style="background:#666"></span><span>CALLES</span><span class="tipo">secondary/tertiary</span></div>
+        <div class="fila"><span class="muestra" style="background:#999"></span><span>RESIDENCIAL</span><span class="tipo">residential</span></div>
+      </div>
+
+      <h2>Viaje</h2>
+      <button class="btn" id="btn-guardar">Guardar viaje</button>
+      <a class="btn bronce" href="juego.html" style="text-align:center;text-decoration:none;margin-top:6px;">Jugar ahora (Modo A)</a>
+      <div class="barra-estado" id="barra-guardar"></div>
+    </aside>
+
+    <div id="mapa"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/base.js"></script>
+  <script src="js/mapa.js"></script>
+</body>
+</html>

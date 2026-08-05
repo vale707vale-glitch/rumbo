@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RUMBO - Entrenamiento de orientacion</title>
+  <meta name="description" content="Entrena tu sentido de la orientacion antes de viajar.">
+  <meta name="theme-color" content="#0b2539">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="titulo">RUMBO</div>
+    <div class="sub">ENTRENAMIENTO DE ORIENTACION ESPACIAL</div>
+    <div class="spacer"></div>
+    <a href="index.html" class="activo">Inicio</a>
+    <a href="juego.html">Jugar</a>
+    <a href="modulo1.html">Modulo 1</a>
+    <a href="modulo2.html">Modulo 2</a>
+    <a href="modulo3.html">Modulo 3</a>
+    <a href="modulo4.html">Modulo 4</a>
+    <a href="mapa.html">Modo Viaje</a>
+  </header>
+
+  <main class="inicio-wrap">
+
+    <section class="rosa-col">
+      <div class="rosa">
+        <div class="circulo"></div>
+        <div class="rosa-grados"></div>
+
+        <span class="cardinal c0">N</span>
+        <span class="cardinal c45">NE</span>
+        <span class="cardinal c90">E</span>
+        <span class="cardinal c135">SE</span>
+        <span class="cardinal c180">S</span>
+        <span class="cardinal c225">SO</span>
+        <span class="cardinal c270">O</span>
+        <span class="cardinal c315">NO</span>
+
+        <a class="modulo n" href="modulo1.html" data-mod="1">
+          <span class="med">M O D U L O</span>
+          <span class="nom">El Punto Ciego</span>
+          <span class="grado">N &middot; 000&deg;</span>
+        </a>
+        <a class="modulo e" href="modulo2.html" data-mod="2">
+          <span class="med">M O D U L O</span>
+          <span class="nom">El Radar Ciego</span>
+          <span class="grado">E &middot; 090&deg;</span>
+        </a>
+        <a class="modulo s" href="modulo3.html" data-mod="3">
+          <span class="med">M O D U L O</span>
+          <span class="nom">Donde quedo mi casa</span>
+          <span class="grado">S &middot; 180&deg;</span>
+        </a>
+        <a class="modulo o" href="modulo4.html" data-mod="4">
+          <span class="med">M O D U L O</span>
+          <span class="nom">Rotacion 3D de Hitos</span>
+          <span class="grado">O &middot; 270&deg;</span>
+        </a>
+
+        <div class="punto"></div>
+      </div>
+      <div class="rosa-caption">LOS CUATRO MODULOS, EN LOS CUATRO RUMBOS</div>
+    </section>
+
+    <section class="col-der">
+      <div class="saludo">
+        Los 4 modulos no son una lista: estan ubicados en los puntos cardinales,
+        porque <strong>eso</strong> es lo que la app entrena. Antes de pisar una ciudad nueva,
+        memoriza su estructura aqui.
+      </div>
+
+      <div class="tarjeta viaje-card" id="viaje-card">
+        <div>
+          <div class="badge">PROXIMO VIAJE</div>
+          <div class="nombre" id="viaje-nombre">Buenos Aires &middot; Palermo</div>
+          <div class="datos" id="viaje-datos">Sin mapa cargado aun</div>
+        </div>
+        <div class="acciones">
+          <a class="btn bronce" href="juego.html">Jugar</a>
+          <a class="btn" href="mapa.html">Armar mapa</a>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <h3>Como funciona</h3>
+        <div class="hint">
+          En <strong>Modo Viaje</strong> elegis el barrio que vas a pisar, marcando tus anclas
+          (hotel, subte, restaurante, hitos). La app borra los nombres de las calles y te queda
+          solo el laberinto: asi aprendes la estructura de verdad.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    var viaje = JSON.parse(localStorage.getItem("rumbo_viaje") || "null");
+    if (viaje) {
+      document.getElementById("viaje-nombre").textContent = viaje.nombre;
+      document.getElementById("viaje-datos").innerHTML =
+        '<span class="mono">' + viaje.anclas.length + "</span> anclas &middot; <span class=\"mono\">" +
+        (viaje.esqueleto ? "esqueleto listo" : "esqueleto pendiente") + "</span>";
+    }
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    }
+  </script>
+</body>
+</html>

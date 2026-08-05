@@ -1,0 +1,15 @@
+{
+  "name": "RUMBO",
+  "short_name": "RUMBO",
+  "description": "Entrenamiento de orientacion espacial: mapa esqueleto, brujula y memoria de rutas.",
+  "lang": "es-AR",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f0e8d5",
+  "theme_color": "#0b2539",
+  "icons": [
+    { "src": "icons/icono.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
