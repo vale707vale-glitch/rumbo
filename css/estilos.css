@@ -540,10 +540,20 @@ a { color: var(--navy-3); }
   .topbar .sub { display: none; }
   .inicio-wrap { padding: 18px 10px 32px; gap: 18px; }
   .col-der { min-width: 0; width: 100%; }
-  .rosa-col { transform: scale(0.74); }
+  .rosa { width: 100%; max-width: 330px; height: auto; display: grid;
+          grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rosa .circulo, .rosa .rosa-grados, .rosa .cardinal, .rosa .punto { display: none; }
+  .modulo {
+    position: static; transform: none; width: auto;
+    border: 1px solid var(--marco); border-radius: 6px;
+    background: linear-gradient(160deg, var(--paper) 0%, var(--paper-2) 100%);
+    padding: 14px 10px; box-shadow: 0 2px 8px rgba(43,36,24,0.15);
+  }
+  .modulo .nom { font-size: 14px; }
+  .modulo.n { order: 1; }
+  .modulo.e { order: 2; }
+  .modulo.s { order: 3; }
+  .modulo.o { order: 4; }
   .viaje-card { flex-direction: column; align-items: stretch; text-align: center; }
   .viaje-card .acciones { flex-direction: row; justify-content: center; margin-left: 0; }
-}
-@media (max-width: 340px) {
-  .rosa-col { transform: scale(0.62); }
 }
