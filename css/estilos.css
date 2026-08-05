@@ -533,3 +533,17 @@ a { color: var(--navy-3); }
 .resumen-filas .rf { display: flex; justify-content: space-between; font-size: 13px; }
 .resumen-filas .rf b { font-family: var(--mono); font-size: 14px; }
 .resumen-filas .rf:nth-child(1) b { color: var(--bronce); font-size: 22px; }
+
+/* ---------- Responsive movil ---------- */
+@media (max-width: 560px) {
+  .topbar { flex-wrap: wrap; gap: 6px; padding: 8px 12px; }
+  .topbar .sub { display: none; }
+  .inicio-wrap { padding: 18px 10px 32px; gap: 18px; }
+  .col-der { min-width: 0; width: 100%; }
+  .rosa-col { transform: scale(0.74); }
+  .viaje-card { flex-direction: column; align-items: stretch; text-align: center; }
+  .viaje-card .acciones { flex-direction: row; justify-content: center; margin-left: 0; }
+}
+@media (max-width: 340px) {
+  .rosa-col { transform: scale(0.62); }
+}
