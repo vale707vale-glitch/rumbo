@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RUMBO - Modo B: Sigue la linea</title>
+  <meta name="theme-color" content="#0b2539">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="titulo">RUMBO</div>
+    <div class="sub">MODO B &middot; SIGUE LA LINEA</div>
+    <div class="spacer"></div>
+    <a href="index.html">Inicio</a>
+    <a href="juego.html">Jugar</a>
+    <a href="modulo1.html">Modulo 1</a>
+    <a href="modulo2.html">Modulo 2</a>
+    <a href="modulo3.html">Modulo 3</a>
+    <a href="modulo4.html">Modulo 4</a>
+    <a href="modulob.html" class="activo">Modo B</a>
+    <a href="moduloc.html">Modo C</a>
+    <a href="mapa.html">Modo Viaje</a>
+  </header>
+
+  <div class="estado">
+    <span>RONDA <span class="num" id="ronda-actual">0</span>/<span id="ronda-total" class="mono">5</span></span>
+    <span>PUNTOS <span class="num" id="puntaje">0</span></span>
+    <span>MEJOR <span class="num" id="mejor">0</span></span>
+  </div>
+
+  <main class="modulob">
+
+    <section class="tarjeta" id="fase-inicio">
+      <h2>Sigue la linea</h2>
+      <p class="blurb">
+        El esqueleto puede estar <b>rotado 180 grados</b>. Una linea punteada arranca
+        desde tu ancla y se corta a mitad de camino: tenes que prolongarla con la
+        mirada y descubrir a cual de tus anclas lleva.
+      </p>
+      <ul class="pasos">
+        <li>1. Mirá el mapa (ojo: puede estar rotado) y la linea que sale de tu ancla.</li>
+        <li>2. Prolongala mentalmente sobre las calles.</li>
+        <li>3. Tocá a cual de tus anclas llega.</li>
+      </ul>
+      <button class="btn bronce" id="btn-iniciar">Empezar</button>
+      <div class="aviso" id="aviso-sin-viaje" hidden>
+        Todavia no hay un viaje con anclas cargado. Anda al
+        <a href="mapa.html">Modo Viaje</a>, marca tu hotel y al menos otra ancla
+        y volvé.
+      </div>
+    </section>
+
+    <div class="mapa-wrap" id="mapa-wrap" hidden>
+      <div id="mapa1"></div>
+      <div class="banner-rotado" id="banner-rotado" hidden>MAPA ROTADO 180&deg;</div>
+    </div>
+
+    <section class="tarjeta" id="fase-pregunta" hidden>
+      <div class="consigna1" id="consignab"></div>
+      <div class="opciones-dir" id="opcionesb"></div>
+      <div class="feedback1" id="feedbackb" hidden></div>
+      <button class="btn bronce" id="btn-siguienteb" hidden>Siguiente</button>
+    </section>
+
+    <section class="tarjeta" id="fase-resumen" hidden>
+      <h2>Fin de la sesion</h2>
+      <div class="resumen-filas" id="resumen-filas"></div>
+      <button class="btn bronce" id="btn-repetir">Volver a empezar</button>
+    </section>
+
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="js/base.js"></script>
+  <script src="js/modulob.js"></script>
+</body>
+</html>
