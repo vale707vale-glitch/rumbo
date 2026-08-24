@@ -1,4 +1,4 @@
-# RUMBO - Manual de usuario
+﻿# RUMBO - Manual de usuario
 
 App de entrenamiento de orientacion espacial. La idea: antes de pisar una ciudad
 nueva, entrenas en casa la capacidad de saber donde quedan las cosas y como volver
@@ -34,14 +34,15 @@ Una rosa de los vientos con los 4 modulos ubicados en los 4 puntos cardinales
 | O | Rotacion 3D de Hitos | Reconocer la vista opuesta de un lugar |
 
 Debajo, la tarjeta **PROXIMO VIAJE** muestra el ultimo mapa guardado y te deja ir
-directo a Jugar o a armar el mapa.
+directo a Jugar o a armar el mapa. Los extras del viaje estan en el menu:
+**Modo B** y **Modo C**.
 
 ---
 
 ## 3. Modo Viaje (la base de todo)
 
 Aqui armas el mapa del barrio que vas a pisar. Sin un viaje guardado no hay juegos
-(excepto el 4, que usa un barrio por defecto).
+(excepto el 4 y el C, que usan un barrio por defecto).
 
 ### Paso a paso
 
@@ -82,7 +83,33 @@ Requiere viaje con al menos 2 anclas.
 
 ---
 
-## 5. Modulo N "El Punto Ciego"
+## 5. Modo B "Sigue la linea"
+
+Requiere viaje con al menos 2 anclas. Entrena rutas sobre el mapa rotado.
+
+1. Aparece el esqueleto con tus anclas; en las rondas avanzadas esta **rotado 180
+   grados** (banner rojo).
+2. Desde tu ancla origen (pin que pulsa) sale una **linea punteada dorada que se
+   corta a mitad de camino**.
+3. Prolongala mentalmente sobre las calles y tocá a cual de tus anclas llega.
+4. Al responder, la linea se completa hasta el destino real. Acertar = +100 pts.
+5. Son 5 rondas; record propio.
+
+## 6. Modo C "Vistazo atras"
+
+Memoria visual con escenas 3D (mismo motor que el Modulo 4, sin API key).
+
+1. La escena 3D del barrio aparece desde un lado al azar y tenes unos segundos
+   para mirarla (**el vistazo**, contador gigante en pantalla).
+2. La escena se oculta y aparecen 4 capturas de los 4 lados: elegi cual es la
+   vista hacia **ATRAS** (el lado opuesto de donde mirabas), de memoria.
+3. Al responder, la escena reaparece girando animada hacia la vista correcta.
+   Acertar = +100 pts. 5 rondas, record propio.
+4. Usa tu ancla HITO como objetivo (o El Obelisco si no hay viaje).
+
+---
+
+## 7. Modulo N "El Punto Ciego"
 
 Memoria espacial pura. Requiere viaje con 2+ anclas.
 
@@ -98,7 +125,7 @@ Memoria espacial pura. Requiere viaje con 2+ anclas.
 
 ---
 
-## 6. Modulo E "El Radar Ciego"
+## 8. Modulo E "El Radar Ciego"
 
 Dead reckoning: caminar a ciegas contando pasos y giros. Se mide con GPS, asi que
 en la casa usa el modo simulacion y el juego real es afuera.
@@ -124,7 +151,7 @@ movelos y usá MARCAR LLEGADA para probar el flujo completo.
 
 ---
 
-## 7. Modulo S "Donde quedo mi casa"
+## 9. Modulo S "Donde quedo mi casa"
 
 El mas parecido a volver al hotel de memoria. GPS + brujula reales.
 
@@ -145,7 +172,7 @@ con movimiento en forma de 8 o revisa que no haya imanes/carcasa metalica cerca.
 
 ---
 
-## 8. Modulo O "Rotacion 3D de Hitos"
+## 10. Modulo O "Rotacion 3D de Hitos"
 
 Escena 3D del barrio con edificios reales de OpenStreetMap (sin API key).
 
@@ -163,13 +190,15 @@ mapeadas funciona perfecto; en zonas vacias puede haber pocas torres.
 
 ---
 
-## 9. Puntajes y records
+## 11. Puntajes y records
 
 Cada juego guarda tu mejor puntaje en el telefono:
 
 | Juego | Clave interna | Maximo |
 |-------|---------------|--------|
 | Modo A | rumbo_mejor | ~750 (6 rondas x 125) |
+| Modo B | rumbo_mejor5 | 500 |
+| Modo C | rumbo_mejor6 | 500 |
 | Modulo 1 | rumbo_mejor1 | 500 |
 | Modulo 2 | rumbo_mejor2 | 500 |
 | Modulo 3 | rumbo_mejor3 | 500 |
@@ -180,7 +209,7 @@ borrar datos.
 
 ---
 
-## 10. Problemas frecuentes
+## 12. Problemas frecuentes
 
 **La brujula marca mal (Modulo 3)**
 Gira el telefono en forma de 8 para calibrar el magnetometro. Aleja imanes,
@@ -190,10 +219,10 @@ fundas magneticas y parlantes. En iOS acepta el permiso cuando lo pide.
 Salí a cielo abierto; adentro de edificios o bajo arboles densos la señal tarda.
 En el Modulo 3, si la señal se cae mientras caminas, la app te avisa en pantalla.
 
-**"Todavia no hay un viaje con anclas" (Modo A y Modulo 1)**
+**"Todavia no hay un viaje con anclas" (Modo A, Modo B y Modulo 1)**
 Anda al Modo Viaje, marcá al menos 2 anclas y volvé.
 
-**"Fallo Overpass" o escena 3D vacia**
+**"Fallo Overpass" o escena 3D vacia (Modulos 4 y C)**
 Es el servicio de datos de OpenStreetMap saturado o sin cobertura en esa zona.
 Reintentá en un momento; el esqueleto del Modo Viaje prueba con un espejo
 automaticamente.
@@ -208,13 +237,14 @@ nuevo. Si el JSON interno se corrompe, la app arranca limpia sin romperse.
 
 ---
 
-## 11. Rutina de entrenamiento sugerida (antes de un viaje)
+## 13. Rutina de entrenamiento sugerida (antes de un viaje)
 
 1. Arma el viaje real de tu proxima ciudad: hotel, subte, restaurante, hito.
 2. Jugá al Modo A 5 minutos por dia (rumbos entre anclas).
-3. Modulo 1 para memorizar el esqueleto; repetilo rotado (nivel avanzado).
+3. Modulo 1 y Modo B para memorizar el esqueleto; ambos incluyen rondas rotadas.
 4. Modulo 2 y 3 en la calle cerca de casa, 2-3 veces por semana.
-5. Modulo 4 con el barrio destino para reconocer fachadas desde cualquier lado.
+5. Modulo 4 y Modo C con el barrio destino para reconocer fachadas desde
+   cualquier lado, incluso de memoria.
 
 Llegás a la ciudad con el esqueleto del barrio en la cabeza: sabes hacia donde
 camina cada calle y como volver al hotel sin abrir un mapa.

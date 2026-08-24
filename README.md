@@ -114,10 +114,14 @@ C:\Users\roros\Documents\rumbo\
   js\modulo1.js         Modulo 1: memorizacion 10 s, preguntas relativas, rotacion 180
   js\modulo2.js         Modulo 2: rutas a ciegas, GPS por tramo, error m/grados
   js\modulo3.js         Modulo 3: GPS, brujula, vector de regreso
-  modulo4.html          Modulo 4 (Rotacion 3D de Hitos)
-  js\modulo4.js         Modulo 4: MapLibre 3D, capturas, rondas, puntaje
-  manifest.webmanifest  PWA
-  sw.js                 Service worker (cache, version rumbo-v6)
+   modulo4.html          Modulo 4 (Rotacion 3D de Hitos)
+   js\modulo4.js         Modulo 4: MapLibre 3D, capturas, rondas, puntaje
+   modulob.html          Modo B (Sigue la linea - rutas sobre mapa rotado)
+   js\modulob.js         Modo B: linea parcial, prolongacion, opciones
+   moduloc.html          Modo C (Vistazo atras - vista opuesta de memoria)
+   js\moduloc.js         Modo C: vistazo temporizado, capturas ocultas, puntaje
+   manifest.webmanifest  PWA
+   sw.js                 Service worker (cache, version rumbo-v13)
   icons\icono.svg       Icono (rosa de los vientos)
   icons\icono-512.png   Icono PNG 512 (para instalacion)
 ```
@@ -227,11 +231,30 @@ C:\Users\roros\Documents\rumbo\
   pts, banner de rotacion presente solo en rondas 4-5, resumen "ACERTADOS 5/5" y
   record guardado en `rumbo_mejor1`.
 
+### Fase 7 - COMPLETA (Modos B y C, cierre del doc original)
+
+- `modulob.html` + `js/modulob.js`: "Sigue la linea". Esqueleto + anclas con linea
+  punteada parcial (45% de la distancia origen->destino); hay que prolongarla
+  mentalmente y elegir la ancla destino entre botones. Rondas 4-5 con mapa rotado
+  180 grados (banner). +100 por acierto, 5 rondas, record en `rumbo_mejor5`.
+- `moduloc.html` + `js/moduloc.js`: "Vistazo atras" (variante de memoria del motor
+  3D del Modulo 4, porque las fotos reales requerian servicios con API key).
+  Vistazo temporizado (6 s, override con `__RUMBO_VISTAZO_MS__`) -> escena oculta ->
+  4 capturas capturadas sin ser visibles -> elegir la vista opuesta de memoria ->
+  la escena reaparece girando (`jumpTo` al frente + reveal + `easeTo` opuesto).
+  +100 por acierto, 5 rondas, record en `rumbo_mejor6`. Modo demo sin red con
+  `?stub` (escena sintetica, `window.__RUMBO_STUB__`).
+- Fix heredado descubierto al portar: el boton "Volver a empezar" del Modulo 4
+  quedaba deshabilitado ("Cargando...") en la segunda sesion; `fin()` ahora lo
+  restaura (tambien en moduloc).
+- Nav: "Modo B" / "Modo C" en todas las pantallas; mencion en la tarjeta de
+  inicio. SW en `rumbo-v13`.
+
 ## Detalles tecnicos a recordar
 
 - IMPORTANTE (service worker): el SW cachea los archivos de forma cache-first.
   Despues de cambiar codigo hay que subir la version de `CACHE` en `sw.js` (hoy
-  `rumbo-v6`) o hacer hard refresh (Ctrl+Shift+R). Un test headless con perfil
+  `rumbo-v13`) o hacer hard refresh (Ctrl+Shift+R). Un test headless con perfil
   reutilizado puede cargar JS viejo cacheado por el SW del perfil anterior: usar
   perfil nuevo o borrar la carpeta del perfil.
 - Fase 3 requiere HTTPS para probar en el celular (geolocalizacion y orientacion
@@ -249,14 +272,15 @@ C:\Users\roros\Documents\rumbo\
 
 ## Roadmap pendiente
 
-- Los 4 modulos de la rosa (N/E/S/O) + Modo Viaje + Modo A estan completos.
-- Desplegar para probar en el celu: subir a GitHub Pages / Netlify / Cloudflare
-  Pages (HTTPS gratis) o tunel local (ngrok/tailscale) para probar Modulo 2 y 3
-  en la calle antes del viaje.
-- Ideas a futuro dentro de Modo Viaje (del doc): Modo B "Sigue la linea" (trazar
-  ruta en mapa rotado) y Modo C "Vistazo atras" (vista inversa con foto).
+- Los 4 modulos de la rosa (N/E/S/O) + Modo Viaje + Modo A + Modo B + Modo C
+  estan completos. El alcance del doc original esta cerrado.
+- Desplegar para probar en el celu: GitHub Pages ya activo
+  (`https://vale707vale-glitch.github.io/rumbo/`); probar Modulo 2 y 3 en la calle
+  antes del viaje (y validar la brujula real del Modulo 3).
+- Extension posible del Modo C: fotos reales de vistas opuestas (requiere
+  Mapillary u fotos propias; hoy usa el motor 3D).
 - Pendientes generales: registrarse en Nominatim con email; verificar cobertura
-  Overpass/OSM en el barrio elegido (modulo 4 depende de datos de edificios).
+  Overpass/OSM en el barrio elegido (modulos 4 y C dependen de datos de edificios).
 
 ## Como probar
 
