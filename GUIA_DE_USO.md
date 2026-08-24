@@ -1,126 +1,220 @@
-# RUMBO - Guia de uso
+# RUMBO - Manual de usuario
 
-App (PWA) que entrena el sentido de la orientacion espacial antes de pisar una
-ciudad nueva. Estetica de carta nautica. Todo funciona 100% local: tus mapas,
-anclas y records se guardan en el telefono, nunca se suben a un servidor.
+App de entrenamiento de orientacion espacial. La idea: antes de pisar una ciudad
+nueva, entrenas en casa la capacidad de saber donde quedan las cosas y como volver
+sobre tus pasos. Estetica de carta nautica; todo funciona 100% local en tu telefono,
+sin cuentas ni servidores: tus mapas y records nunca salen del aparato.
 
-## Instalacion en el celular
+---
 
-1. Abri la app en el navegador (desde GitHub Pages o un servidor local con HTTPS).
-2. En el menu del navegador toca "Agregar a pantalla de inicio".
-3. La app queda instalada como una aplicacion de pantalla completa.
+## 1. Instalacion en el celular
+
+1. Abrí en el navegador: `https://vale707vale-glitch.github.io/rumbo/`
+2. Android (Chrome): menu de los 3 puntos -> **Anadir a pantalla principal**.
+   iPhone (Safari): boton Compartir -> **Añadir a pantalla de inicio**.
+3. Abrila desde ese icono: queda a pantalla completa como una app mas.
 
 Requisitos:
-- GPS y brujula funcionan solo en contexto seguro (HTTPS o localhost). GitHub
-  Pages ya da HTTPS gratis.
-- Los modulos 2 y 3 usan GPS y brujula reales: conviene usarlos al aire libre.
-- La primera vez que el Modulo 3 pide la brujula en iOS hay que tocar un boton
-  (Apple exige permiso explicito por gesto).
+- GPS y brujula funcionan solo con HTTPS o localhost (GitHub Pages ya da HTTPS).
+- Los modulos 2 y 3 se juegan al aire libre con señal GPS.
+- En iOS, la primera vez la app pide permiso de brujula con un boton (Apple lo exige).
 
-## Pantalla de inicio
+---
 
-La rosa de los vientos (o su grilla en celular) tiene los 4 modulos en los
-4 puntos cardinales, porque eso es lo que la app entrena:
+## 2. Pantalla de inicio
 
-- N - Modulo 1 "El Punto Ciego": memoria del mapa.
-- E - Modulo 2 "El Radar Ciego": caminar a ciegas.
-- S - Modulo 3 "Donde quedo mi casa": GPS + brujula de verdad.
-- O - Modulo 4 "Rotacion 3D de Hitos": reconocer la vista opuesta.
+Una rosa de los vientos con los 4 modulos ubicados en los 4 puntos cardinales
+(eso es exactamente lo que la app entrena):
 
-Tambien muestra la tarjeta "Proximo viaje" con los datos del ultimo mapa
-guardado.
+| Rumbo | Modulo | Que entrena |
+|-------|--------|-------------|
+| N | El Punto Ciego | Memoria del mapa |
+| E | El Radar Ciego | Dead reckoning (contar pasos y giros) |
+| S | Donde quedo mi casa | GPS + brujula reales: el vector de regreso |
+| O | Rotacion 3D de Hitos | Reconocer la vista opuesta de un lugar |
 
-## Modo Viaje (armar tu mapa)
+Debajo, la tarjeta **PROXIMO VIAJE** muestra el ultimo mapa guardado y te deja ir
+directo a Jugar o a armar el mapa.
 
-Es la base de todo: sin un viaje guardado no hay esqueleto ni modulos 1 y A.
+---
 
-1. Busca el barrio (ej. "Palermo, Buenos Aires") y toca "Ir", o toca "GPS"
-   para ir a tu ubicacion.
-2. Elegi un tipo de ancla (HOTEL / SUBTE / RESTAURANTE / HITO) y toca el mapa
-   para marcarla. Se pide un nombre; arrastralas para moverlas.
-3. Toca "Generar esqueleto": la app baja las calles de la zona visible y las
-   dibuja como un laberinto sin nombres. El toggle cambia entre esqueleto y
-   mapa con nombres.
-4. Toca "Guardar viaje". Todo se guarda automatico en el telefono
-   (clave `rumbo_viaje`).
+## 3. Modo Viaje (la base de todo)
 
-Consejo: marcá tu hotel, el subte mas cercano, un restaurante y un hito
-conocido. Esas 4 anclas son las que usan los juegos.
+Aqui armas el mapa del barrio que vas a pisar. Sin un viaje guardado no hay juegos
+(excepto el 4, que usa un barrio por defecto).
 
-## Modo A "La Brujula del Turista" (Jugar)
+### Paso a paso
 
-Requiere un viaje guardado con al menos 2 anclas.
+1. **Busca el barrio**: escribilo en el campo de busqueda (ej. "Palermo, Buenos
+   Aires") y toca **Ir**, o toca **GPS** para volar a donde estas parado.
+2. **Marca anclas**: elegi un tipo abajo a la izquierda y toca el mapa:
+   - HOTEL (azul) - tu base
+   - SUBTE (verde)
+   - RESTAURANTE (rojo)
+   - HITO (dorado) - un monumento o edificio conocido
+   Aparece un cartel para ponerle nombre (Enter o "Guardar nombre" acepta).
+   Para moverla: arrastrala. Para quitarla: la X en la lista. Tocando una fila de
+   la lista el mapa centra esa ancla.
+3. **Genera el esqueleto**: tocá **Generar esqueleto** y la app baja las calles de
+   la zona visible y las dibuja como un laberinto SIN nombres de calles ni
+   negocios. Ese es el punto: memorizas la estructura, no los letreros.
+   El boton **Ver esqueleto / Ver mapa con nombres** alterna entre ambos mapas.
+4. **Guarda**: se guarda automatico en cada cambio (tambien podes tocar
+   **Guardar viaje**).
 
-1. El juego te pone en una ancla de origen (tu hotel) y te pide el rumbo hacia
-   otro destino.
-2. Arrastra la brujula (o usa los atajos N/E/S/O) y toca "Confirmar rumbo".
-3. Despues de responder se dibuja la linea real y calcula tu error en grados.
-   Si acertas el cardinal exacto hay bonus "RUMBO EXACTO".
-4. Puntaje por ronda: menos error, mas puntos (maximo 100 + 25 de bonus).
+Consejo: marcá minimo tu hotel + subte + restaurante + hito. Con 4 anclas bien
+elegidas alcanza para todos los juegos.
 
-## Modulo 1 "El Punto Ciego"
+---
 
-Requiere un viaje guardado con al menos 2 anclas.
+## 4. Modo A "La Brujula del Turista" (Jugar)
 
-1. Mira el mapa esqueleto con tus anclas durante 10 segundos (contador en pantalla).
-2. El mapa se apaga y te pregunta la posicion relativa: "estas en el hotel
-   mirando al Norte, donde queda el restaurante?"
-3. Responde DE FRENTE / A LA DERECHA / A LA IZQUIERDA / DETRAS.
-4. Las ultimas rondas son el nivel avanzado: mapa rotado 180 grados
-   (aparece el banner "MAPA ROTADO 180").
+Requiere viaje con al menos 2 anclas.
 
-## Modulo 2 "El Radar Ciego"
+1. Arrancas en tu hotel (o primera ancla) y hay que decir el rumbo hacia otra
+   ancla de la lista.
+2. **Arrastras la brujula** con el dedo hasta el rumbo que crees correcto (los
+   botones N/E/S/O son atajos rapidos).
+3. Tocá **Confirmar rumbo**: aparece el rumbo real dibujado en linea dorada, tu
+   error en grados y los puntos (maximo 100 por ronda; si acertas el cardinal
+   exacto, bonus RUMBO EXACTO +25).
+4. Hasta 6 rondas barajadas. Al final: resumen y record personal guardado.
 
-Se mide con GPS; para el juego real sali a la calle.
+---
 
-1. Elegi tu largo de paso (60/70/80 cm) y toca "Marcar inicio y empezar".
-2. La app te dicta la ruta tramo a tramo ("caminá 12 pasos, gira 90 grados a la
-   derecha, caminá 8").
-3. Caminas contando pasos y giros sin mirar. Toca PAR&Eacute; al fin de cada tramo
-   y MARCAR LLEGADA en el ultimo.
-4. La app compara tu punto estimado contra tu posicion real: error en metros y
-   en grados (con lado: derecha/izquierda).
-5. Puntaje: menor error, mas puntos. Pista segun el rango (IMPRESIONANTE /
-   BUENA ESTIMACION / SE VA ACERCANDO / REVISA PASOS Y GIROS).
+## 5. Modulo N "El Punto Ciego"
 
-## Modulo 3 "Donde quedo mi casa"
+Memoria espacial pura. Requiere viaje con 2+ anclas.
 
-GPS + brujula reales. Es el que mas se parece a volver a tu hotel.
+1. Mirá el esqueleto con tus anclas durante **10 segundos** (contador en pantalla).
+2. Se apaga el mapa y llega la pregunta: *"Estas en el hotel mirando al Norte,
+   donde queda el restaurante?"*
+3. Respondé con los 4 botones: **DE FRENTE / A LA DERECHA / A LA IZQUIERDA /
+   DETRAS**.
+4. Despues de responder se vuelve a mostrar el mapa con la linea real y el rumbo
+   exacto ("QUEDA NE 032 grados").
+5. Son 5 rondas. Las ultimas 2 son nivel avanzado: el mapa se muestra **rotado
+   180 grados** (banner avisa). Acertar = +100 pts.
 
-1. Toca "Marcar inicio y empezar" (te pide permiso de ubicacion y brujula).
-2. Caminas; la app te avisa PARADA (vibra) con un objetivo de 40-150 m.
-3. Apunta la parte trasera del telefono (la camara) hacia donde empezaste.
-   El gauge en vivo muestra tu desviacion.
-4. Toca "Fijar rumbo" cuando apuntes bien. Dentro de 15 grados de margen sumas
-   puntos (5 grados o menos = 100 pts, 15 o menos = 75 pts).
+---
 
-## Modulo 4 "Rotacion 3D de Hitos"
+## 6. Modulo E "El Radar Ciego"
 
-Escena 3D del barrio (edificios de OpenStreetMap, sin API key).
+Dead reckoning: caminar a ciegas contando pasos y giros. Se mide con GPS, asi que
+en la casa usa el modo simulacion y el juego real es afuera.
 
-1. Fijate bien en la vista 3D y de que lado estas parado.
-2. Elegi cual de las 4 opciones es la vista desde el lado opuesto de la manzana.
-3. +100 si acertas. Al responder la escena gira animada hacia la vista correcta
-   para que compares.
+### Afuera
 
-## Simulaciones (para probar en la PC)
+1. Elegi tu largo de paso (60 / 70 / 80 cm) y tocá **Marcar inicio y empezar**.
+2. Aparece la ruta por tramos, ejemplo:
+   - "Caminá 12 pasos hacia adelante"
+   - "Girá 90 grados a la derecha y caminá 8 pasos"
+   - "Dale la vuelta (180) y caminá 10 pasos"
+3. Caminá contando SIN mirar el telefono y tocá **PARE** al terminar cada tramo
+   (**MARCAR LLEGADA** en el ultimo).
+4. Resultado: a cuantos metros y grados quedaste del objetivo real.
+5. Puntaje por error de distancia: 3 m o menos = 100, 6 m o menos = 75,
+   10 m o menos = 50. Pista segun rango (IMPRESIONANTE / BUENA ESTIMACION /
+   SE VA ACERCANDO / REVISÁ PASOS Y GIROS). 5 rondas.
 
-- Modulo 2 sin GPS: aparece un panel con dos sliders (error en distancia y en
-  angulo) para simular donde quedaste.
-- Modulo 3 sin brujula: aparece un slider que simula hacia donde apunta el
-  telefono.
+### En casa (PC)
 
-Sirven para probar el flujo en el escritorio, pero el entrenamiento real es en
-la calle con GPS y brujula.
+Si no hay GPS se activa un panel con dos sliders (error de distancia y de angulo):
+movelos y usá MARCAR LLEGADA para probar el flujo completo.
 
-## Datos guardados en el telefono
+---
 
-- `rumbo_viaje`: el mapa, las anclas y el esqueleto del ultimo viaje.
-- `rumbo_mejor`, `rumbo_mejor1`...`rumbo_mejor4`: tus records de cada juego.
+## 7. Modulo S "Donde quedo mi casa"
 
-Para borrarlos: en el navegador, ajustes del sitio / borrar datos.
+El mas parecido a volver al hotel de memoria. GPS + brujula reales.
 
-## Version instalada vieja?
+1. Parate en un punto de partida reconocible y tocá **Marcar inicio y empezar**
+   (acepta permisos de ubicacion y brujula).
+2. **Caminá** en cualquier direccion: la app cuenta metros desde el inicio y a los
+   40-150 m vibra y grita PARADA.
+3. Fase parada: mirá el **gauge** (la brujula en pantalla: aguja que gira segun
+   hacia donde apunta el piezo del telefono). Girá sobre vos mismo hasta apuntar
+   de vuelta al punto de partida. Cuando la desviacion baja de 15 grados la linea
+   se pone verde: DENTRO DEL MARGEN.
+4. Tocá **Fijar rumbo**. Puntaje: 5 grados o menos = 100 pts, 15 o menos = 75.
+5. Feedback: "EL INICIO QUEDO SO 215 grados a 87 m". 5 rondas, promedio final.
 
-La app cachea archivos para funcionar offline. Si despues de una actualizacion
-ves la version anterior, cerra la app y reabri (o recarga la pagina).
+Chequeo rapido de calibracion: antes de jugar, girá el telefono mirando el gauge;
+apuntando al norte debe marcar ~000, al este ~090. Si marca otra cosa, recalibrá
+con movimiento en forma de 8 o revisa que no haya imanes/carcasa metalica cerca.
+
+---
+
+## 8. Modulo O "Rotacion 3D de Hitos"
+
+Escena 3D del barrio con edificios reales de OpenStreetMap (sin API key).
+
+1. Tocá Empezar: baja los edificios y calles de la zona de tu ancla HITO
+   (o El Obelisco si no hay viaje).
+2. La camara mira el barrio desde uno de los 4 lados (N/E/S/O, al azar, sin poder
+   moverla). Mirá bien los detalles.
+3. Abajo aparecen **4 capturas**: elegi cual es la vista desde el **lado opuesto**
+   de la escena.
+4. Al responder, la escena gira animada hacia la vista correcta para comparar.
+   Acierto = +100 pts. 5 rondas.
+
+Nota: necesita datos de edificios cargados en OSM para tu barrio. En zonas bien
+mapeadas funciona perfecto; en zonas vacias puede haber pocas torres.
+
+---
+
+## 9. Puntajes y records
+
+Cada juego guarda tu mejor puntaje en el telefono:
+
+| Juego | Clave interna | Maximo |
+|-------|---------------|--------|
+| Modo A | rumbo_mejor | ~750 (6 rondas x 125) |
+| Modulo 1 | rumbo_mejor1 | 500 |
+| Modulo 2 | rumbo_mejor2 | 500 |
+| Modulo 3 | rumbo_mejor3 | 500 |
+| Modulo 4 | rumbo_mejor4 | 500 |
+
+Para borrar todo (viaje + records): ajustes del navegador -> sitio ->
+borrar datos.
+
+---
+
+## 10. Problemas frecuentes
+
+**La brujula marca mal (Modulo 3)**
+Gira el telefono en forma de 8 para calibrar el magnetometro. Aleja imanes,
+fundas magneticas y parlantes. En iOS acepta el permiso cuando lo pide.
+
+**GPS lento o pegado en 0 m (Modulos 2 y 3)**
+Salí a cielo abierto; adentro de edificios o bajo arboles densos la señal tarda.
+En el Modulo 3, si la señal se cae mientras caminas, la app te avisa en pantalla.
+
+**"Todavia no hay un viaje con anclas" (Modo A y Modulo 1)**
+Anda al Modo Viaje, marcá al menos 2 anclas y volvé.
+
+**"Fallo Overpass" o escena 3D vacia**
+Es el servicio de datos de OpenStreetMap saturado o sin cobertura en esa zona.
+Reintentá en un momento; el esqueleto del Modo Viaje prueba con un espejo
+automaticamente.
+
+**Despues de una actualizacion veo la version vieja**
+La app cachea archivos para funcionar offline. Cerra y reabrí la app; si sigue,
+recargá con la conexion activa.
+
+**Se rompio algo y no puedo recuperar el mapa**
+Borrá los datos del sitio desde el navegador (borra viaje y records) y empezá de
+nuevo. Si el JSON interno se corrompe, la app arranca limpia sin romperse.
+
+---
+
+## 11. Rutina de entrenamiento sugerida (antes de un viaje)
+
+1. Arma el viaje real de tu proxima ciudad: hotel, subte, restaurante, hito.
+2. Jugá al Modo A 5 minutos por dia (rumbos entre anclas).
+3. Modulo 1 para memorizar el esqueleto; repetilo rotado (nivel avanzado).
+4. Modulo 2 y 3 en la calle cerca de casa, 2-3 veces por semana.
+5. Modulo 4 con el barrio destino para reconocer fachadas desde cualquier lado.
+
+Llegás a la ciudad con el esqueleto del barrio en la cabeza: sabes hacia donde
+camina cada calle y como volver al hotel sin abrir un mapa.
