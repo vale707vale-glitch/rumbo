@@ -84,7 +84,12 @@
       $("dist-grande").textContent = d.toFixed(0) + " m";
       $("dist-lectura").textContent = d.toFixed(0) + " m";
       if (d >= targetDist || Date.now() - tInicioWalk >= MAX_TIEMPO_WALK) parar();
-    }, null, { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 });
+    }, function () {
+      if (estado === "caminar") {
+        $("instruccion-caminar").textContent =
+          "Se\u00f1al GPS perdida o debil. Busca cielo abierto; la distancia puede quedar congelada.";
+      }
+    }, { enableHighAccuracy: true, maximumAge: 2000, timeout: 20000 });
   }
 
   function parar() {
@@ -199,6 +204,17 @@
     });
   }
 
+  function headingDeEvento(e) {
+    if (!e) return null;
+    var h = e.webkitCompassHeading;
+    if (typeof h === "number" && isFinite(h)) return h;
+    if (typeof e.alpha === "number" && isFinite(e.alpha)) {
+      if (e.absolute === true || e.type === "deviceorientationabsolute") return 360 - e.alpha;
+      return e.alpha;
+    }
+    return null;
+  }
+
   function init() {
     crearTicks();
     $("btn-iniciar").addEventListener("click", iniciar);
@@ -210,8 +226,8 @@
       iniciar();
     });
 
-    window.addEventListener("deviceorientationabsolute", function (e) { setHeading(e.alpha); }, true);
-    window.addEventListener("deviceorientation", function (e) { setHeading(e.alpha); }, true);
+    window.addEventListener("deviceorientationabsolute", function (e) { setHeading(headingDeEvento(e)); }, true);
+    window.addEventListener("deviceorientation", function (e) { setHeading(headingDeEvento(e)); }, true);
 
     $("sim-slider").addEventListener("input", function () {
       var g = parseInt($("sim-slider").value, 10);
