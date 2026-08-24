@@ -328,6 +328,8 @@
       '<div class="rf"><span>PUNTOS TOTALES</span><b>' + puntos + "</b></div>" +
       '<div class="rf"><span>ACERTADOS</span><b>' + (puntos / 100) + "/" + RONDA_MAX + "</b></div>" +
       '<div class="rf"><span>RECORD PERSONAL</span><b>' + mejorGlobal + " pts</b></div>";
+    $("btn-volver").textContent = "Volver a empezar";
+    $("btn-volver").disabled = false;
     setFase("resumen");
   }
 
