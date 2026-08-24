@@ -117,7 +117,11 @@
   }
 
   function leerViaje() {
-    return JSON.parse(localStorage.getItem("rumbo_viaje") || "null");
+    try {
+      return JSON.parse(localStorage.getItem("rumbo_viaje") || "null");
+    } catch (e) {
+      return null;
+    }
   }
 
   global.RUMBO = {

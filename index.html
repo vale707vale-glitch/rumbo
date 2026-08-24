@@ -99,8 +99,9 @@
   </main>
 
   <script>
-    var viaje = JSON.parse(localStorage.getItem("rumbo_viaje") || "null");
-    if (viaje) {
+    var viaje = null;
+    try { viaje = JSON.parse(localStorage.getItem("rumbo_viaje") || "null"); } catch (e) {}
+    if (viaje && viaje.anclas) {
       document.getElementById("viaje-nombre").textContent = viaje.nombre;
       document.getElementById("viaje-datos").innerHTML =
         '<span class="mono">' + viaje.anclas.length + "</span> anclas &middot; <span class=\"mono\">" +
