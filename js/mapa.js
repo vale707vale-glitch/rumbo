@@ -163,8 +163,11 @@
     document.getElementById("btn-esqueleto").disabled = true;
 
     function pedir(u) {
-      fetch(u, { headers: { "Accept": "application/json" } })
+      var ctrl = new AbortController();
+      var timer = setTimeout(function () { ctrl.abort(); }, 25000);
+      fetch(u, { headers: { "Accept": "application/json" }, signal: ctrl.signal })
         .then(function (r) {
+          clearTimeout(timer);
           if (!r.ok) throw new Error("HTTP " + r.status);
           return r.json();
         })
@@ -172,6 +175,7 @@
           procesarCalles(data.elements || []);
         })
         .catch(function () {
+          clearTimeout(timer);
           if (u.indexOf("kumi") === -1) {
             estado("Reintentando con espejo\u2026");
             pedir("https://overpass.kumi.systems/api/interpreter?data=" + encodeURIComponent(q));
@@ -250,13 +254,23 @@
     map.addLayer(tileOsm);
     map.addLayer(capaEsqueleto);
 
-    var viaje = JSON.parse(localStorage.getItem("rumbo_viaje") || "null");
+    var btnToggle = document.createElement("button");
+    btnToggle.id = "btn-toggle-skeleton";
+    btnToggle.className = "btn papel";
+    btnToggle.style.marginTop = "6px";
+    btnToggle.textContent = "Ver esqueleto";
+    btnToggle.addEventListener("click", function () {
+      setModo(modo === "esqueleto" ? "normal" : "esqueleto");
+    });
+    document.getElementById("btn-esqueleto").insertAdjacentElement("afterend", btnToggle);
+
+    var viaje = RUMBO.leerViaje();
     if (viaje) {
       if (viaje.centro && viaje.zoom) map.setView(viaje.centro, viaje.zoom);
       if (viaje.nombre && viaje.nombre.indexOf("·") !== -1) {
         document.getElementById("buscar").value = viaje.nombre.split("·")[1].trim();
       }
-      viaje.anclas.forEach(function (d) {
+      (viaje.anclas || []).forEach(function (d) {
         var a = { tipo: d.tipo, nombre: d.nombre, lat: d.lat, lng: d.lng };
         a.marker = crearMarcador(a);
         a.marker.addTo(map);
@@ -318,16 +332,6 @@
 
     document.getElementById("btn-esqueleto").addEventListener("click", generarEsqueleto);
     document.getElementById("btn-guardar").addEventListener("click", guardar);
-
-    var btnToggle = document.createElement("button");
-    btnToggle.id = "btn-toggle-skeleton";
-    btnToggle.className = "btn papel";
-    btnToggle.style.marginTop = "6px";
-    btnToggle.textContent = "Ver esqueleto";
-    btnToggle.addEventListener("click", function () {
-      setModo(modo === "esqueleto" ? "normal" : "esqueleto");
-    });
-    document.getElementById("btn-esqueleto").insertAdjacentElement("afterend", btnToggle);
 
     if (navigator.serviceWorker) {
       navigator.serviceWorker.register("sw.js").catch(function () {});
