@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RUMBO - Modo C: Vistazo atras</title>
+  <meta name="theme-color" content="#0b2539">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" crossorigin="">
+  <script>
+    if (new URLSearchParams(location.search).has("stub")) { window.__RUMBO_STUB__ = true; }
+  </script>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="titulo">RUMBO</div>
+    <div class="sub">MODO C &middot; VISTAZO ATRAS</div>
+    <div class="spacer"></div>
+    <a href="index.html">Inicio</a>
+    <a href="juego.html">Jugar</a>
+    <a href="modulo1.html">Modulo 1</a>
+    <a href="modulo2.html">Modulo 2</a>
+    <a href="modulo3.html">Modulo 3</a>
+    <a href="modulo4.html">Modulo 4</a>
+    <a href="modulob.html">Modo B</a>
+    <a href="moduloc.html" class="activo">Modo C</a>
+    <a href="mapa.html">Modo Viaje</a>
+  </header>
+
+  <div class="estado">
+    <span>RONDA <span class="num" id="ronda-actual">0</span>/<span id="ronda-total" class="mono">5</span></span>
+    <span>PUNTOS <span class="num" id="puntaje">0</span></span>
+    <span>MEJOR <span class="num" id="mejor">0</span></span>
+  </div>
+
+  <main class="modulo4">
+
+    <section class="tarjeta" id="fase-inicio">
+      <h2>Vistazo atras</h2>
+      <p class="blurb">
+        Vas a ver el barrio en <b>3D</b> desde un lado durante unos segundos
+        (<b>el vistazo</b>). Despues la escena se oculta y tenes que reconocer de
+        memoria la vista que corresponde a <b>mirar hacia atras</b>. Entrena a
+        guardar el mapa mental del entorno con una sola mirada.
+      </p>
+      <ul class="pasos">
+        <li>1. Mirá bien la escena y de que lado estas parado: te quedan pocos segundos.</li>
+        <li>2. Cuando se oculte, elegi entre las 4 capturas cual es la vista desde el lado opuesto.</li>
+        <li>3. Al responder, la escena reaparece girando hacia la vista correcta.</li>
+      </ul>
+      <button class="btn bronce" id="btn-iniciar">Empezar</button>
+      <div class="barra-estado" id="barra-estado"></div>
+    </section>
+
+    <section id="fase-juego" hidden>
+      <div class="mapa4-col">
+        <div id="mapa4"></div>
+        <div class="etiqueta-vista" id="etiqueta-vista"></div>
+        <div class="contador" id="contadorv"></div>
+      </div>
+      <div class="opciones-col">
+        <div class="consigna4" id="consigna4"></div>
+        <div class="opciones-grid" id="opciones-grid"></div>
+        <div class="feedback4" id="feedback4" hidden></div>
+        <button class="btn bronce" id="btn-siguientec" hidden>Siguiente</button>
+      </div>
+    </section>
+
+    <section class="tarjeta" id="fase-resumen" hidden>
+      <h2>Fin de la sesion</h2>
+      <div class="resumen-filas" id="resumen-filas"></div>
+      <button class="btn bronce" id="btn-volver">Volver a empezar</button>
+    </section>
+
+  </main>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js" crossorigin=""></script>
+  <script src="js/base.js"></script>
+  <script src="js/moduloc.js"></script>
+</body>
+</html>
