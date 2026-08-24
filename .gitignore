@@ -1,3 +1,5 @@
 # Archivos temporales de testing local
 _test_*.html
+_test_*.js
+_dbg_*.html
 _seed_inline.js

@@ -534,6 +534,25 @@ a { color: var(--navy-3); }
 .resumen-filas .rf b { font-family: var(--mono); font-size: 14px; }
 .resumen-filas .rf:nth-child(1) b { color: var(--bronce); font-size: 22px; }
 
+/* ---------- Modo B y Modo C ---------- */
+.modulob {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.modulob .blurb { font-size: 14px; line-height: 1.6; margin-bottom: 12px; }
+.modulob .blurb b { color: var(--bronce); }
+.modulob .pasos { font-size: 13px; line-height: 1.8; color: var(--tinta-suave); margin: 0 0 14px 18px; }
+.modulob .aviso {
+  margin-top: 12px; font-size: 13px; color: #a33; border: 1px dashed #a33;
+  border-radius: 4px; padding: 10px; background: rgba(170, 51, 51, 0.06);
+}
+.modulob .aviso a { color: var(--bronce); font-weight: 700; }
+.modulob .btn { width: 100%; margin-top: 4px; }
+
 /* ---------- Responsive movil ---------- */
 @media (max-width: 560px) {
   .topbar { flex-wrap: wrap; gap: 4px; padding: 6px 10px; }
