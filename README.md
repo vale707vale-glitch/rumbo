@@ -279,8 +279,9 @@ C:\Users\roros\Documents\rumbo\
   antes del viaje (y validar la brujula real del Modulo 3).
 - Extension posible del Modo C: fotos reales de vistas opuestas (requiere
   Mapillary u fotos propias; hoy usa el motor 3D).
-- Pendientes generales: registrarse en Nominatim con email; verificar cobertura
-  Overpass/OSM en el barrio elegido (modulos 4 y C dependen de datos de edificios).
+- Pendiente general: verificar cobertura Overpass/OSM en el barrio elegido
+  (modulos 4 y C dependen de datos de edificios). Nominatim ya se identifica con
+  email de contacto en las consultas del Modo Viaje.
 
 ## Como probar
 

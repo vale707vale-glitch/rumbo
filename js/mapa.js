@@ -233,6 +233,7 @@
 
   function buscar(q, cb) {
     var url = "https://nominatim.openstreetmap.org/search?format=json&limit=1&accept-language=es" +
+      "&email=vale707vale@gmail.com" +
       "&q=" + encodeURIComponent(q);
     fetch(url, { headers: { "Accept": "application/json" } })
       .then(function (r) {
