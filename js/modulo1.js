@@ -127,6 +127,11 @@
     pregunta.avanzada = avanzada;
     $("banner-rotado").hidden = !avanzada;
     mostrarMapa(true, avanzada);
+    try {
+      map.fitBounds(L.latLngBounds(
+        viaje.anclas.map(function (a) { return [a.lat, a.lng]; })
+      ).pad(0.3));
+    } catch (e) {}
     $("contador").style.display = "";
     var ms = window.__RUMBO_MEMORIA_MS__ || 10000;
     contador(ms, finMemoria);
@@ -164,7 +169,11 @@
     };
 
     mostrarMapa(true, false);
-    map.setView(pregunta.origen, viaje.zoom);
+    try {
+      map.fitBounds(L.latLngBounds(
+        [[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]]
+      ).pad(0.4));
+    } catch (e) {}
     L.polyline(
       [[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]],
       { color: "#c9a227", weight: 3, dashArray: "6 6", opacity: 0.9 }
