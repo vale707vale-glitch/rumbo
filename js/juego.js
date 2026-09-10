@@ -88,6 +88,8 @@
     document.getElementById("resultado").innerHTML = "";
     document.getElementById("btn-siguiente").hidden = true;
     document.getElementById("btn-confirmar").disabled = false;
+    var panel = document.querySelector(".panel.juego");
+    if (panel) panel.scrollTop = 0;
     setRumbo(0);
   }
 
@@ -171,6 +173,8 @@
     document.getElementById("puntaje").textContent = puntosTotal;
     document.getElementById("btn-confirmar").disabled = true;
     document.getElementById("btn-siguiente").hidden = false;
+    var panel = document.querySelector(".panel.juego");
+    if (panel) panel.scrollTop = panel.scrollHeight;
   }
 
   function verdaderogrados(g) {
