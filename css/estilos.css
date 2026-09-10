@@ -376,14 +376,14 @@ a { color: var(--navy-3); }
   padding: 6px 14px; border-radius: 4px; z-index: 500;
 }
 .brujula-mapa {
-  position: absolute; top: 12px; right: 12px; z-index: 800;
-  width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(11, 37, 57, 0.85); border: 2px solid var(--bronce);
+  position: absolute; top: 10px; right: 10px; z-index: 800;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(11, 37, 57, 0.85); border: 1px solid var(--bronce);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   pointer-events: none; line-height: 1;
 }
-.brujula-mapa .flecha-n { color: var(--bronce-claro); font-size: 14px; display: block; }
-.brujula-mapa .letra-n { color: var(--paper); font-family: var(--mono); font-size: 13px; font-weight: 700; display: block; }
+.brujula-mapa .flecha-n { color: var(--bronce-claro); font-size: 9px; display: block; }
+.brujula-mapa .letra-n { color: var(--paper); font-family: var(--mono); font-size: 9px; font-weight: 700; display: block; }
 .brujula-mapa.abajo .flecha-n { transform: rotate(180deg); }
 
 .consigna1 { font-size: 15px; line-height: 1.7; margin-bottom: 12px; }
