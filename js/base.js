@@ -143,7 +143,7 @@
   }
 
   global.RUMBO = {
-    VER: "v27",    TIPOS: TIPOS,
+    VER: "v28",    TIPOS: TIPOS,
     PESOS: PESOS,
     tileOsm: tileOsm,
     tileSkeleton: tileSkeleton,

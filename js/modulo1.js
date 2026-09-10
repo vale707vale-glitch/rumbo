@@ -104,6 +104,23 @@
     setFase("pregunta");
   }
 
+  function coordValida(lat, lng) {
+    if (lat === null || lat === undefined || lat === "" ||
+        lng === null || lng === undefined || lng === "") return false;
+    var la = +lat, ln = +lng;
+    return la === la && ln === ln && !(la === 0 && ln === 0) &&
+      Math.abs(la) <= 90 && Math.abs(ln) <= 180;
+  }
+
+  function encuadrar(pares) {
+    var pts = (pares || []).filter(function (p) { return coordValida(p[0], p[1]); });
+    if (!pts.length) return 0;
+    try {
+      map.fitBounds(L.latLngBounds(pts).pad(0.3));
+      return pts.length;
+    } catch (e) { return 0; }
+  }
+
   function finMemoria() {
     mostrarMapa(false, false);
     mostrarPregunta();
@@ -130,17 +147,13 @@
     pregunta.avanzada = avanzada;
     $("banner-rotado").hidden = !avanzada;
     mostrarMapa(true, avanzada);
-    try {
-      map.fitBounds(L.latLngBounds(
-        viaje.anclas.map(function (a) { return [a.lat, a.lng]; })
-      ).pad(0.3));
-    } catch (e) {}
+    var nOk = encuadrar(viaje.anclas.map(function (a) { return [a.lat, a.lng]; }));
     var nCalles = (viaje.esqueleto && viaje.esqueleto.calles) ? viaje.esqueleto.calles.length : 0;
     var bd = $("banner-datos");
     if (bd) {
-      bd.textContent = viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · " + RUMBO.VER +
-        (nCalles ? "" : " · GENERALAS EN MODO VIAJE");
-      bd.classList.toggle("warn", !nCalles);
+      bd.textContent = nOk + "/" + viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · " + RUMBO.VER +
+        (nCalles ? (nOk < viaje.anclas.length ? " · REVISA ANCLAS EN MODO VIAJE" : "") : " · GENERALAS EN MODO VIAJE");
+      bd.classList.toggle("warn", !nCalles || nOk < viaje.anclas.length);
       bd.hidden = false;
     }
     $("contador").style.display = "";
@@ -180,11 +193,7 @@
     };
 
     mostrarMapa(true, false);
-    try {
-      map.fitBounds(L.latLngBounds(
-        [[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]]
-      ).pad(0.4));
-    } catch (e) {}
+    encuadrar([[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]]);
     L.polyline(
       [[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]],
       { color: "#c9a227", weight: 3, dashArray: "6 6", opacity: 0.9 }
