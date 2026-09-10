@@ -176,11 +176,18 @@
       var z = 0;
       try { z = map.getZoom(); } catch (e) {}
       var aviso = "";
-      if (!nCalles) aviso = " · GENERALAS EN MODO VIAJE";
-      else if (!nDentro) aviso = " · ESQUELETO DE OTRA ZONA: REGENERA AQUI";
-      else if (nOk < viaje.anclas.length) aviso = " · REVISA ANCLAS EN MODO VIAJE";
-      bd.textContent = nOk + "/" + viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · z" + z + " · " + RUMBO.VER + aviso;
-      bd.classList.toggle("warn", !!aviso);
+      if (!nCalles) aviso = "GENERALAS EN MODO VIAJE";
+      else if (!nDentro) aviso = "ESQUELETO DE OTRA ZONA";
+      else if (nDentro < nOk) aviso = "ESQUELETO PARCIAL";
+      else if (nOk < viaje.anclas.length) aviso = "REVISA ANCLAS EN MODO VIAJE";
+      var base = nOk + "/" + viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · z" + z + " · " + RUMBO.VER;
+      if (aviso) {
+        bd.innerHTML = base + " · " + aviso + ' · <a href="mapa.html">ABRIR MODO VIAJE</a>';
+        bd.classList.add("warn");
+      } else {
+        bd.textContent = base;
+        bd.classList.remove("warn");
+      }
       bd.hidden = false;
     }
     $("contador").style.display = "";
