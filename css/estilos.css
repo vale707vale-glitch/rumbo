@@ -194,6 +194,7 @@ a { color: var(--navy-3); }
 
 .mapa-layout { display: flex; height: calc(100vh - 112px); }
 #mapa { flex: 1; }
+#mapa.esqueleto { background: var(--paper-2); }
 
 .panel {
   width: 340px;

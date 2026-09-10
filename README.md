@@ -38,8 +38,9 @@ rumbo sobre el esqueleto), "Modo B: Sigue la linea" (trazar rutas en mapa rotado
   instala con HTTPS. GPS y brujula funcionan con Geolocation API + DeviceOrientation
   API (requieren contexto seguro: localhost o HTTPS).
 - Stack de mapas 100% gratis, sin API key:
-  - Leaflet 1.9.4 (CDN unpkg) + tiles de OpenStreetMap.
-  - Tiles sin etiquetas para el esqueleto: CARTO `light_nolabels` (subdominios abcd).
+  - Leaflet 1.9.4 (CDN unpkg) + tiles de OpenStreetMap para el mapa normal.
+  - Esqueleto sin raster: fondo papel propio + calles vectoriales de Overpass
+    (CARTO `light_nolabels` dejo de ser gratis sin key, se elimino su uso).
   - Geocoder: Nominatim (limit 1 req/s, uso personal).
   - Calles vectoriales: Overpass API (`overpass-api.de`, espejo `overpass.kumi.systems`,
     con cadena de espejos en modulo4). Requiere User-Agent de navegador; en tests por
@@ -63,7 +64,7 @@ rumbo sobre el esqueleto), "Modo B: Sigue la linea" (trazar rutas en mapa rotado
     mapa (popup pide nombre, Enter acepta), se pueden arrastrar, quitar y re-nombrar.
   - "Generar esqueleto": baja las calles de la zona visible via Overpass, dibuja
     polylines con grosor segun tipo de via (avenidas oscuras gruesas, residenciales
-    finas claras), pasa a tiles sin nombres y oculta/limita a 2200 tramos para
+    finas claras) sobre fondo papel sin raster, y oculta/limita a 2200 tramos para
     rendimiento en celu. Toggle "Ver esqueleto" / "Ver mapa con nombres".
   - Persistencia en `localStorage` clave `rumbo_viaje` (centro, zoom, anclas,
     esqueleto). Guardado automatico en cada cambio.

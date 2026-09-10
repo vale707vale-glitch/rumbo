@@ -30,12 +30,16 @@
     });
   }
 
+  // Fondo del esqueleto: capa vacia sobre fondo papel (CSS).
+  // CARTO light_nolabels dejo de ser gratis sin key (devuelve "API KEY REQUIRED"),
+  // asi que el laberinto lo dibujan solo las calles vectoriales de Overpass.
+  // getAttribution mantiene el credito OSM en el control de Leaflet.
   function tileSkeleton() {
-    return L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
-      subdomains: "abcd",
-      maxZoom: 19,
-      attribution: "&copy; <a href='https://www.openstreetmap.org/copyright'>OSM</a> &copy; <a href='https://carto.com/attributions'>CARTO</a>"
-    });
+    var g = L.layerGroup();
+    g.getAttribution = function () {
+      return "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a>";
+    };
+    return g;
   }
 
   function pinIcon(tipo) {

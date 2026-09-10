@@ -135,6 +135,7 @@
   function setModo(nuevo) {
     modo = nuevo;
     var txt = document.getElementById("estado-modo");
+    document.getElementById("mapa").classList.toggle("esqueleto", modo === "esqueleto");
     if (modo === "esqueleto") {
       map.removeLayer(tileOsm);
       map.addLayer(tileSkeleton);

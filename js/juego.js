@@ -28,6 +28,7 @@
     var tile = viaje.esqueleto ? RUMBO.tileSkeleton() : RUMBO.tileOsm();
     map.addLayer(tile);
     if (viaje.esqueleto) {
+      document.getElementById("mapa").classList.add("esqueleto");
       RUMBO.dibujarEsqueleto(capa, viaje.esqueleto.calles);
       map.addLayer(capa);
     }
