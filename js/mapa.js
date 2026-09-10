@@ -334,6 +334,11 @@
     document.getElementById("btn-esqueleto").addEventListener("click", generarEsqueleto);
     document.getElementById("btn-guardar").addEventListener("click", guardar);
 
+    document.getElementById("btn-panel").addEventListener("click", function () {
+      document.getElementById("mapa-layout").classList.toggle("panel-cerrado");
+      setTimeout(function () { map.invalidateSize(); }, 50);
+    });
+
     if (navigator.serviceWorker) {
       navigator.serviceWorker.register("sw.js").catch(function () {});
     }
