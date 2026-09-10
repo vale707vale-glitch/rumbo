@@ -255,7 +255,7 @@ C:\Users\roros\Documents\rumbo\
 
 - IMPORTANTE (service worker): el SW cachea los archivos de forma cache-first.
   Despues de cambiar codigo hay que subir la version de `CACHE` en `sw.js` (hoy
-  `rumbo-v13`) o hacer hard refresh (Ctrl+Shift+R). Un test headless con perfil
+  `rumbo-v33`) o hacer hard refresh (Ctrl+Shift+R). Un test headless con perfil
   reutilizado puede cargar JS viejo cacheado por el SW del perfil anterior: usar
   perfil nuevo o borrar la carpeta del perfil.
 - Fase 3 requiere HTTPS para probar en el celular (geolocalizacion y orientacion
@@ -272,6 +272,26 @@ C:\Users\roros\Documents\rumbo\
 - Paleta: navy #0b2539, papel #f0e8d5, bronce #b0884e, tinta #2b2418.
 
 ## Roadmap pendiente
+
+- PENDIENTE (sigue mañana): Modulo 1 no muestra el esqueleto en el celu
+  (solo cronometro + una linea), con datos presentes (7 anclas, 244 calles).
+  Intentado sin exito: encuadrar anclas con fitBounds (v21), filtrar coords
+  invalidas null/0,0/fuera de rango (v28), enfocar el grupo ignorando lejanos
+  (v30), aviso de esqueleto de otra zona o parcial con link a Modo Viaje
+  (v31-v32), cronometro chico en esquina (v25), cartel diagnostico
+  "N/M ANCLAS · K CALLES · zZ · vV" (v24-v29). Tambien se arreglo de paso:
+  origen y destino siempre con distinto nombre (v27). Hipotesis abiertas:
+  esqueleto regenerado con las anclas fuera de pantalla (bbox no las cubre),
+  anclas lejanas validas, o calles poco visibles. Proximo paso: pedir texto
+  exacto del cartel y captura, y regenerar con las anclas en pantalla.
+- Sesion v20-v33 (sep 2026): CARTO `light_nolabels` empezo a exigir API key
+  (verificado: el tile devuelve "API KEY REQUIRED"). Esqueleto sin raster:
+  fondo papel + calles Overpass (v20). Modo A movil: panel 45%, brujula
+  150 px, Confirmar/Siguiente en pastilla flotante (v22/v31/v33), fix de
+  "000&deg;" literal (v22), auto-scroll del panel (v23). `vercel.json`: sw.js
+  con `max-age=0, must-revalidate` (los celu quedaban con version vieja).
+  Sello `RUMBO.VER` visible en el cartel del Modulo 1 para diagnosticar
+  cache (v26+). SW hoy en `rumbo-v33`.
 
 - Los 4 modulos de la rosa (N/E/S/O) + Modo Viaje + Modo A + Modo B + Modo C
   estan completos. El alcance del doc original esta cerrado.
