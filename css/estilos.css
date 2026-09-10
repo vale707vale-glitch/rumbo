@@ -593,7 +593,7 @@ a { color: var(--navy-3); }
   .viaje-card .acciones { flex-direction: row; justify-content: center; margin-left: 0; }
 
   .mapa-layout { flex-direction: column; height: calc(100vh - 102px); height: calc(100dvh - 102px); }
-  .panel { width: 100%; max-height: 48%; border-right: none; border-bottom: 2px solid var(--marco); }
+  .panel { width: 100%; max-height: 38%; border-right: none; border-bottom: 2px solid var(--marco); }
   .mapa-layout.panel-cerrado .panel { display: none; }
   #btn-panel { display: inline-block; margin-left: auto; font-family: var(--mono); font-size: 12px; padding: 4px 10px; border-radius: 4px; border: 1px solid var(--marco); background: var(--paper-2); cursor: pointer; color: var(--tinta); }
   .ancla .quitar { font-size: 20px; padding: 8px 12px; }
