@@ -214,7 +214,7 @@
   function setRumbo(g) {
     rumboActual = ((Math.round(g) % 360) + 360) % 360;
     document.getElementById("aguja").setAttribute("transform", "rotate(" + rumboActual + ")");
-    document.getElementById("lectura-grados").textContent = verdaderogrados(rumboActual) + "&deg;";
+    document.getElementById("lectura-grados").textContent = verdaderogrados(rumboActual) + "°";
     document.getElementById("lectura-cardinal").textContent =
       RUMBO.cardinalDe(rumboActual) + " " + RUMBO.etiquetaRumbo(rumboActual);
   }
