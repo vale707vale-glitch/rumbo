@@ -363,11 +363,11 @@ a { color: var(--navy-3); }
 #mapa1 { position: absolute; inset: 0; border: 2px solid var(--bronce); border-radius: 6px; background: var(--paper-2); }
 #mapa1.rotado180 { transform: rotate(180deg); }
 .contador {
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  font-family: var(--mono); font-size: 120px; font-weight: 700;
-  color: var(--bronce-claro); letter-spacing: 4px;
-  text-shadow: 0 2px 18px rgba(0,0,0,0.55);
+  position: absolute; top: 10px; left: 10px;
+  font-family: var(--mono); font-size: 34px; font-weight: 700;
+  color: var(--paper); background: rgba(11, 37, 57, 0.85);
+  border: 1px solid var(--bronce); border-radius: 6px;
+  padding: 2px 12px; letter-spacing: 2px;
   pointer-events: none; z-index: 500;
 }
 .banner-rotado {
