@@ -112,12 +112,30 @@
       Math.abs(la) <= 90 && Math.abs(ln) <= 180;
   }
 
+  function spanDe(pts) {
+    var b = L.latLngBounds(pts);
+    var ne = b.getNorthEast(), sw = b.getSouthWest();
+    return Math.max(Math.abs(ne.lat - sw.lat), Math.abs(ne.lng - sw.lng));
+  }
+
   function encuadrar(pares) {
     var pts = (pares || []).filter(function (p) { return coordValida(p[0], p[1]); });
-    if (!pts.length) return 0;
+    var usados = pts.slice();
+    while (usados.length > 2 && spanDe(usados) > 0.05) {
+      var cx = 0, cy = 0;
+      usados.forEach(function (p) { cx += p[0]; cy += p[1]; });
+      cx /= usados.length; cy /= usados.length;
+      var fi = 0, fd = -1;
+      usados.forEach(function (p, i) {
+        var d = Math.abs(p[0] - cx) + Math.abs(p[1] - cy);
+        if (d > fd) { fd = d; fi = i; }
+      });
+      usados.splice(fi, 1);
+    }
+    if (usados.length < 2) return 0;
     try {
-      map.fitBounds(L.latLngBounds(pts).pad(0.3));
-      return pts.length;
+      map.fitBounds(L.latLngBounds(usados).pad(0.3));
+      return usados.length;
     } catch (e) { return 0; }
   }
 
