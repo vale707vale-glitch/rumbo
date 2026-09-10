@@ -1,4 +1,4 @@
-const CACHE = "rumbo-v32";
+const CACHE = "rumbo-v33";
 const BASE = [
   "index.html",
   "mapa.html",
