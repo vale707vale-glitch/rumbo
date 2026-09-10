@@ -20,6 +20,11 @@ Overpass, que son servicios externos).
 Regla simple: si el juego usa TU mapa guardado o escenas 3D, es de sillon.
 Si el juego mide donde estas parado de verdad, es de calle.
 
+Importante: la practica sale siempre de tu ZONA ELEGIDA Y GUARDADA, no de tu
+GPS del momento. Puedes estar en tu casa entrenando el barrio de tu proximo
+viaje. La unica excepcion son los Modulos 2 y 3, que miden tu cuerpo de verdad
+(pasos y retorno) y usan tu posicion GPS actual: esos sirven en cualquier calle.
+
 ---
 
 ## 1. Instalacion en el celular
