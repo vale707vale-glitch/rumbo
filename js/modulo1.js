@@ -56,9 +56,9 @@
   function dibujarAnclas() {
     capaAnclas.clearLayers();
     (viaje.anclas || []).forEach(function (a) {
-      var icono = a.nombre === pregunta.origen.nombre
+      var icono = a === pregunta.origen
         ? RUMBO.pinPulsoIcon(a.tipo)
-        : (a.nombre === pregunta.destino.nombre ? marcarDestino(a.tipo) : RUMBO.pinIcon(a.tipo));
+        : (a === pregunta.destino ? marcarDestino(a.tipo) : RUMBO.pinIcon(a.tipo));
       L.marker([a.lat, a.lng], { icon: icono }).addTo(capaAnclas);
     });
   }
@@ -73,8 +73,11 @@
   function generarPregunta() {
     var anclas = viaje.anclas;
     var io = Math.floor(Math.random() * anclas.length);
-    var id;
-    do { id = Math.floor(Math.random() * anclas.length); } while (id === io);
+    var id, intentos = 0;
+    do {
+      id = Math.floor(Math.random() * anclas.length);
+      intentos++;
+    } while ((id === io || anclas[id].nombre === anclas[io].nombre) && intentos < 50);
     var origen = anclas[io], destino = anclas[id];
     var h = [0, 90, 180, 270][Math.floor(Math.random() * 4)];
     var brg = RUMBO.rumboEntre(origen, destino);
