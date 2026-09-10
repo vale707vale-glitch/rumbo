@@ -13,12 +13,14 @@
   var modo = "normal";
   var esqueletoData = null;
   var tileOsm, tileSkeleton;
+  var bloqueadas = false;
 
   function guardar() {
     var viaje = {
       nombre: "Buenos Aires · " + zonaNombre(),
       centro: map.getCenter(),
       zoom: map.getZoom(),
+      bloq: bloqueadas,
       anclas: anclas.map(function (a) {
         return { tipo: a.tipo, nombre: a.nombre, lat: a.marker.getLatLng().lat, lng: a.marker.getLatLng().lng };
       }),
@@ -35,7 +37,7 @@
   }
 
   function crearMarcador(a) {
-    var m = L.marker([a.lat, a.lng], { icon: RUMBO.pinIcon(a.tipo), draggable: true });
+    var m = L.marker([a.lat, a.lng], { icon: RUMBO.pinIcon(a.tipo), draggable: !bloqueadas });
     var t = TIPOS[a.tipo];
     m.bindPopup("<b>" + a.nombre + "</b><br><span class='mono'>" + t.nombre + "</span><br>" +
       "lat " + a.lat.toFixed(5) + " lng " + a.lng.toFixed(5));
@@ -74,8 +76,7 @@
     });
   }
 
-  function agregarAncla(latlng, tipo) {
-    var t = TIPOS[tipo];
+  function agregarAncla(latlng, tipo) {    var t = TIPOS[tipo];
     var n = anclas.filter(function (a) { return a.tipo === tipo; }).length + 1;
     var a = { tipo: tipo, nombre: t.nombre + " " + n, lat: latlng.lat, lng: latlng.lng };
     a.marker = crearMarcador(a);
@@ -114,8 +115,17 @@
     }, 100);
   }
 
-  function setTipo(t) {
-    tipoActual = t;
+  function aplicarBloqueo() {
+    anclas.forEach(function (a) {
+      if (!a.marker || !a.marker.dragging) return;
+      if (bloqueadas) a.marker.dragging.disable();
+      else a.marker.dragging.enable();
+    });
+    var b = document.getElementById("btn-bloq");
+    if (b) b.textContent = bloqueadas ? "Soltar anclas" : "Fijar anclas";
+  }
+
+  function setTipo(t) {    tipoActual = t;
     document.querySelectorAll("#seleccion-tipo .chip").forEach(function (c) {
       c.classList.toggle("activo", c.dataset.tipo === t);
     });
@@ -285,6 +295,8 @@
       }
       pintarAnclas();
     }
+    if (viaje && viaje.bloq) bloqueadas = true;
+    aplicarBloqueo();
 
     map.on("click", function (e) {
       if (marcadorBase) map.removeLayer(marcadorBase);
@@ -334,6 +346,11 @@
 
     document.getElementById("btn-esqueleto").addEventListener("click", generarEsqueleto);
     document.getElementById("btn-guardar").addEventListener("click", guardar);
+    document.getElementById("btn-bloq").addEventListener("click", function () {
+      bloqueadas = !bloqueadas;
+      aplicarBloqueo();
+      guardar();
+    });
 
     document.getElementById("btn-panel").addEventListener("click", function () {
       document.getElementById("mapa-layout").classList.toggle("panel-cerrado");
