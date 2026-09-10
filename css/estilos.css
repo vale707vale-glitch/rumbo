@@ -376,6 +376,14 @@ a { color: var(--navy-3); }
   font-family: var(--mono); font-size: 12px; letter-spacing: 3px;
   padding: 6px 14px; border-radius: 4px; z-index: 500;
 }
+.banner-datos {
+  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  background: var(--navy); color: var(--bronce-claro);
+  font-family: var(--mono); font-size: 11px; letter-spacing: 1px;
+  padding: 6px 12px; border: 1px solid var(--bronce); border-radius: 4px;
+  z-index: 500; white-space: nowrap;
+}
+.banner-datos.warn { background: #a33; color: var(--paper); border-color: #a33; }
 .brujula-mapa {
   position: absolute; top: 10px; right: 10px; z-index: 800;
   width: 30px; height: 30px; border-radius: 50%;
@@ -533,6 +541,10 @@ a { color: var(--navy-3); }
 .compas-modo .cardinales-rapidos .chip { background: var(--navy-3); color: var(--paper); border-color: var(--bronce); }
 
 .panel.juego .btn { width: 100%; margin-top: 6px; }
+.panel.juego #btn-confirmar, .panel.juego #btn-siguiente {
+  position: sticky; bottom: 0; z-index: 5;
+  box-shadow: 0 -4px 10px rgba(43, 36, 24, 0.25);
+}
 
 .resultado { margin-top: 8px; border-top: 2px solid var(--bronce); padding-top: 8px; font-size: 13px; }
 .resultado .rf { display: flex; justify-content: space-between; padding: 3px 0; }

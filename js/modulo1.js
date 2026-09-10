@@ -132,6 +132,12 @@
         viaje.anclas.map(function (a) { return [a.lat, a.lng]; })
       ).pad(0.3));
     } catch (e) {}
+    var nCalles = (viaje.esqueleto && viaje.esqueleto.calles) ? viaje.esqueleto.calles.length : 0;
+    var bd = $("banner-datos");
+    bd.textContent = viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES" +
+      (nCalles ? "" : " · GENERALAS EN MODO VIAJE");
+    bd.classList.toggle("warn", !nCalles);
+    bd.hidden = false;
     $("contador").style.display = "";
     var ms = window.__RUMBO_MEMORIA_MS__ || 10000;
     contador(ms, finMemoria);
