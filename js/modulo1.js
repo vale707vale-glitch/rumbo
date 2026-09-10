@@ -166,14 +166,21 @@
     $("banner-rotado").hidden = !avanzada;
     mostrarMapa(true, avanzada);
     var nOk = encuadrar(viaje.anclas.map(function (a) { return [a.lat, a.lng]; }));
-    var nCalles = (viaje.esqueleto && viaje.esqueleto.calles) ? viaje.esqueleto.calles.length : 0;
+    var esq = viaje.esqueleto;
+    var nCalles = (esq && esq.calles) ? esq.calles.length : 0;
+    var nDentro = (esq && esq.bbox)
+      ? viaje.anclas.filter(function (a) { return RUMBO.enBbox(a.lat, a.lng, esq.bbox); }).length
+      : viaje.anclas.length;
     var bd = $("banner-datos");
     if (bd) {
       var z = 0;
       try { z = map.getZoom(); } catch (e) {}
-      bd.textContent = nOk + "/" + viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · z" + z + " · " + RUMBO.VER +
-        (nCalles ? (nOk < viaje.anclas.length ? " · REVISA ANCLAS EN MODO VIAJE" : "") : " · GENERALAS EN MODO VIAJE");
-      bd.classList.toggle("warn", !nCalles || nOk < viaje.anclas.length);
+      var aviso = "";
+      if (!nCalles) aviso = " · GENERALAS EN MODO VIAJE";
+      else if (!nDentro) aviso = " · ESQUELETO DE OTRA ZONA: REGENERA AQUI";
+      else if (nOk < viaje.anclas.length) aviso = " · REVISA ANCLAS EN MODO VIAJE";
+      bd.textContent = nOk + "/" + viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · z" + z + " · " + RUMBO.VER + aviso;
+      bd.classList.toggle("warn", !!aviso);
       bd.hidden = false;
     }
     $("contador").style.display = "";

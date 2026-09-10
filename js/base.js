@@ -128,6 +128,15 @@
     }
   }
 
+  function enBbox(lat, lng, bbox) {
+    try {
+      return lat >= bbox[0][0] && lat <= bbox[1][0] &&
+        lng >= bbox[0][1] && lng <= bbox[1][1];
+    } catch (e) {
+      return true;
+    }
+  }
+
   function brujulaMapa(idContenedor) {
     var cont = document.getElementById(idContenedor);
     if (!cont) return null;
@@ -143,7 +152,7 @@
   }
 
   global.RUMBO = {
-    VER: "v30",    TIPOS: TIPOS,
+    VER: "v31",    TIPOS: TIPOS,
     PESOS: PESOS,
     tileOsm: tileOsm,
     tileSkeleton: tileSkeleton,
@@ -157,6 +166,7 @@
     distanciaEntre: distanciaEntre,
     destinoDesde: destinoDesde,
     leerViaje: leerViaje,
+    enBbox: enBbox,
     brujulaMapa: brujulaMapa
   };
 })(window);

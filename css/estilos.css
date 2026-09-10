@@ -378,10 +378,11 @@ a { color: var(--navy-3); }
 }
 .banner-datos {
   position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+  max-width: 92%;
   background: var(--navy); color: var(--bronce-claro);
   font-family: var(--mono); font-size: 11px; letter-spacing: 1px;
   padding: 6px 12px; border: 1px solid var(--bronce); border-radius: 4px;
-  z-index: 500; white-space: nowrap;
+  z-index: 500; text-align: center;
 }
 .banner-datos.warn { background: #a33; color: var(--paper); border-color: #a33; }
 .brujula-mapa {
@@ -611,6 +612,12 @@ a { color: var(--navy-3); }
   #btn-panel { display: inline-block; margin-left: auto; font-family: var(--mono); font-size: 12px; padding: 4px 10px; border-radius: 4px; border: 1px solid var(--marco); background: var(--paper-2); cursor: pointer; color: var(--tinta); }
   .ancla .quitar { font-size: 20px; padding: 8px 12px; }
   .panel.juego { border-left: none; border-top: 2px solid var(--marco); }
+  .panel.juego { padding-bottom: 70px; }
+  .panel.juego #btn-confirmar, .panel.juego #btn-siguiente {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 1001;
+    margin: 0; border-radius: 0; padding: 13px 14px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.35);
+  }
   #brujula { width: 150px; height: 150px; }
   .compas-modo { gap: 6px; padding: 8px; }
   .compas-modo .lectura { font-size: 16px; }

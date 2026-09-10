@@ -81,9 +81,12 @@
     map.fitBounds(bnds);
 
     document.getElementById("ronda-actual").textContent = ronda + 1;
+    var zonaOk = !viaje.esqueleto || !viaje.esqueleto.bbox ||
+      [orig, metaActual].some(function (a) { return RUMBO.enBbox(a.lat, a.lng, viaje.esqueleto.bbox); });
     document.getElementById("consigna").innerHTML =
       "Estas en " + etiquetaAncla(orig) + ".<br>Necesitas llegar a " + etiquetaAncla(metaActual) +
-      ".<br><br><i>Sin mirar los letreros: apunta hacia el rumbo por el que caminarias.</i>";
+      ".<br><br><i>Sin mirar los letreros: apunta hacia el rumbo por el que caminarias.</i>" +
+      (zonaOk ? "" : "<br><br><i>El esqueleto guardado es de otra zona: en Modo Viaje encuadra tus anclas y toca Generar esqueleto.</i>");
     document.getElementById("resultado").hidden = true;
     document.getElementById("resultado").innerHTML = "";
     document.getElementById("btn-siguiente").hidden = true;
