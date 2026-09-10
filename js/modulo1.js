@@ -135,7 +135,7 @@
     var nCalles = (viaje.esqueleto && viaje.esqueleto.calles) ? viaje.esqueleto.calles.length : 0;
     var bd = $("banner-datos");
     if (bd) {
-      bd.textContent = viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES" +
+      bd.textContent = viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · " + RUMBO.VER +
         (nCalles ? "" : " · GENERALAS EN MODO VIAJE");
       bd.classList.toggle("warn", !nCalles);
       bd.hidden = false;
