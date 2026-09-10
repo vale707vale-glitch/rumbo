@@ -260,6 +260,7 @@
   } else {
     document.addEventListener("DOMContentLoaded", function () {
       build();
+      RUMBO.brujulaMapa("mapa");
       if (navigator.serviceWorker) navigator.serviceWorker.register("sw.js").catch(function () {});
     });
   }

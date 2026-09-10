@@ -254,6 +254,7 @@
     map = L.map("mapa", { zoomControl: true }).setView(PALERMO, 14);
     map.addLayer(tileOsm);
     map.addLayer(capaEsqueleto);
+    RUMBO.brujulaMapa("mapa");
 
     var btnToggle = document.createElement("button");
     btnToggle.id = "btn-toggle-skeleton";

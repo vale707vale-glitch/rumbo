@@ -124,6 +124,20 @@
     }
   }
 
+  function brujulaMapa(idContenedor) {
+    var cont = document.getElementById(idContenedor);
+    if (!cont) return null;
+    if (window.getComputedStyle(cont).position === "static") {
+      cont.style.position = "relative";
+    }
+    var b = document.createElement("div");
+    b.className = "brujula-mapa";
+    b.title = "Norte";
+    b.innerHTML = '<span class="flecha-n">\u25B2</span><span class="letra-n">N</span>';
+    cont.appendChild(b);
+    return b;
+  }
+
   global.RUMBO = {
     TIPOS: TIPOS,
     PESOS: PESOS,
@@ -138,6 +152,7 @@
     angError: angError,
     distanciaEntre: distanciaEntre,
     destinoDesde: destinoDesde,
-    leerViaje: leerViaje
+    leerViaje: leerViaje,
+    brujulaMapa: brujulaMapa
   };
 })(window);

@@ -10,6 +10,7 @@
   var ronda = 0, puntos = 0, aciertos = 0;
   var pregunta = null, respondida = false;
   var mejorGlobal = parseInt(localStorage.getItem("rumbo_mejor5") || "0", 10);
+  var brujNorte = null;
 
   function $(id) { return document.getElementById(id); }
 
@@ -28,6 +29,7 @@
   function mostrarMapa(visible, rotado) {
     $("mapa-wrap").hidden = !visible;
     $("mapa1").classList.toggle("rotado180", !!(visible && rotado));
+    if (brujNorte) brujNorte.classList.toggle("abajo", !!(visible && rotado));
     if (visible && map) map.invalidateSize();
   }
 
@@ -177,6 +179,7 @@
   }
 
   function init() {
+    brujNorte = RUMBO.brujulaMapa("mapa-wrap");
     $("btn-iniciar").addEventListener("click", iniciar);
     $("btn-repetir").addEventListener("click", iniciar);
     if (navigator.serviceWorker) {
