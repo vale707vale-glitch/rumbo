@@ -151,7 +151,9 @@
     var nCalles = (viaje.esqueleto && viaje.esqueleto.calles) ? viaje.esqueleto.calles.length : 0;
     var bd = $("banner-datos");
     if (bd) {
-      bd.textContent = nOk + "/" + viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · " + RUMBO.VER +
+      var z = 0;
+      try { z = map.getZoom(); } catch (e) {}
+      bd.textContent = nOk + "/" + viaje.anclas.length + " ANCLAS · " + nCalles + " CALLES · z" + z + " · " + RUMBO.VER +
         (nCalles ? (nOk < viaje.anclas.length ? " · REVISA ANCLAS EN MODO VIAJE" : "") : " · GENERALAS EN MODO VIAJE");
       bd.classList.toggle("warn", !nCalles || nOk < viaje.anclas.length);
       bd.hidden = false;
