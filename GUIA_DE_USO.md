@@ -2,8 +2,23 @@
 
 App de entrenamiento de orientacion espacial. La idea: antes de pisar una ciudad
 nueva, entrenas en casa la capacidad de saber donde quedan las cosas y como volver
-sobre tus pasos. Estetica de carta nautica; todo funciona 100% local en tu telefono,
-sin cuentas ni servidores: tus mapas y records nunca salen del aparato.
+sobre tus pasos. Estetica de carta nautica; tus mapas y records se guardan en tu
+telefono, sin cuentas ni servidores.
+
+Ojo: no es 100% offline. La app instalada abre sin internet, y tus viajes
+guardados y los juegos de memoria andan sin conexion. Pero buscar zonas, bajar
+calles y ver el mapa base necesitan internet (usan OpenStreetMap, Nominatim y
+Overpass, que son servicios externos).
+
+## 0. Donde se juega cada cosa
+
+| Lugar | Modulos | Necesita |
+|-------|---------|----------|
+| En casa (sillon, sin salir) | Modo Viaje (armar mapa), Jugar Modo A, Modulo 1, Modo B, Modulo 4, Modo C | Internet para buscar zona y bajar calles; despues el entrenamiento es en pantalla |
+| Afuera (calle, plaza) | Modulo 2, Modulo 3 | Celu con GPS; Modulo 3 ademas brujula; cielo abierto |
+
+Regla simple: si el juego usa TU mapa guardado o escenas 3D, es de sillon.
+Si el juego mide donde estas parado de verdad, es de calle.
 
 ---
 
@@ -39,7 +54,7 @@ directo a Jugar o a armar el mapa. Los extras del viaje estan en el menu:
 
 ---
 
-## 3. Modo Viaje (la base de todo)
+## 3. Modo Viaje (la base de todo, EN CASA con internet)
 
 Aqui armas el mapa del barrio que vas a pisar. Sin un viaje guardado no hay juegos
 (excepto el 4 y el C, que usan un barrio por defecto).
@@ -68,7 +83,7 @@ elegidas alcanza para todos los juegos.
 
 ---
 
-## 4. Modo A "La Brujula del Turista" (Jugar)
+## 4. Modo A "La Brujula del Turista" (Jugar, EN CASA)
 
 Requiere viaje con al menos 2 anclas.
 
@@ -83,7 +98,7 @@ Requiere viaje con al menos 2 anclas.
 
 ---
 
-## 5. Modo B "Sigue la linea"
+## 5. Modo B "Sigue la linea" (EN CASA)
 
 Requiere viaje con al menos 2 anclas. Entrena rutas sobre el mapa rotado.
 
@@ -95,7 +110,7 @@ Requiere viaje con al menos 2 anclas. Entrena rutas sobre el mapa rotado.
 4. Al responder, la linea se completa hasta el destino real. Acertar = +100 pts.
 5. Son 5 rondas; record propio.
 
-## 6. Modo C "Vistazo atras"
+## 6. Modo C "Vistazo atras" (EN CASA, con internet)
 
 Memoria visual con escenas 3D (mismo motor que el Modulo 4, sin API key).
 
@@ -109,7 +124,7 @@ Memoria visual con escenas 3D (mismo motor que el Modulo 4, sin API key).
 
 ---
 
-## 7. Modulo N "El Punto Ciego"
+## 7. Modulo N "El Punto Ciego" (EN CASA)
 
 Memoria espacial pura. Requiere viaje con 2+ anclas.
 
@@ -125,68 +140,117 @@ Memoria espacial pura. Requiere viaje con 2+ anclas.
 
 ---
 
-## 8. Modulo E "El Radar Ciego"
+## 8. Modulo E "El Radar Ciego" (AFUERA, con GPS)
 
-Dead reckoning: caminar a ciegas contando pasos y giros. Se mide con GPS, asi que
-en la casa usa el modo simulacion y el juego real es afuera.
+Para que sirve: aprender a llegar a un punto caminando a ciegas, contando pasos
+y giros. En viaje es estimar distancias ("el hotel esta a unos 100 m"), salir de
+un subte y seguir derecho sin mirar el celu a cada rato.
 
-### Afuera
+Como es por dentro: la app NO te muestra el objetivo en ningun mapa. Te dicta una
+ruta escrita de 2 o 3 tramos y calcula en silencio donde deberias terminar si
+caminaras perfecto. Despues compara con donde terminaste de verdad (GPS) y te da
+el error en metros y en grados.
 
-1. Elegi tu largo de paso (60 / 70 / 80 cm) y tocá **Marcar inicio y empezar**.
-2. Aparece la ruta por tramos, ejemplo:
-   - "Caminá 12 pasos hacia adelante"
-   - "Girá 90 grados a la derecha y caminá 8 pasos"
-   - "Dale la vuelta (180) y caminá 10 pasos"
-3. Caminá contando SIN mirar el telefono y tocá **PARE** al terminar cada tramo
-   (**MARCAR LLEGADA** en el ultimo).
-4. Resultado: a cuantos metros y grados quedaste del objetivo real.
-5. Puntaje por error de distancia: 3 m o menos = 100, 6 m o menos = 75,
-   10 m o menos = 50. Pista segun rango (IMPRESIONANTE / BUENA ESTIMACION /
-   SE VA ACERCANDO / REVISÁ PASOS Y GIROS). 5 rondas.
+### Afuera (juego real)
 
-### En casa (PC)
+1. Anda a un lugar abierto: plaza, calle tranquila, parque. El GPS adentro de
+   edificios no sirve.
+2. Elegi tu largo de paso (60 / 70 / 80 cm; 70 es el defecto) y toca
+   **Marcar inicio y empezar**. Acepta el permiso de ubicacion.
+3. Aparece la ruta por tramos, ejemplo:
+   - "Camina 12 pasos hacia adelante"
+   - "Gira 90 grados a la derecha y camina 8 pasos"
+   - "Da la vuelta (180) y camina 10 pasos"
+   Las rutas tienen 2 o 3 tramos, de 8 a 15 pasos cada uno, con giros de 90 o 180.
+4. Camina contando SIN mirar el telefono y toca **PARE** al terminar cada tramo
+   (**MARCAR LLEGADA** en el ultimo). Conta los giros en voz alta si te ayuda.
+5. Resultado: a cuantos metros y grados quedaste del objetivo real, mas una pista:
+   - 3 m o menos = 100 pts ("IMPRESIONANTE: tu radar esta calibrado")
+   - 6 m o menos = 75 ("BUENA ESTIMACION. Afina los pasos")
+   - 10 m o menos = 50 ("SE VA ACERCANDO. Repeti la ruta en tu cabeza")
+   - mas de 10 m = 0 ("REVISA PASOS Y GIROS")
+6. Son 5 rondas. Al final ves promedio de error en metros y en grados, y tu record.
+7. Si una ruta te salio mal, el boton **Descartar y rehacer la ruta** te da otra.
 
-Si no hay GPS se activa un panel con dos sliders (error de distancia y de angulo):
-movelos y usá MARCAR LLEGADA para probar el flujo completo.
+### En casa (simulacion)
 
----
+Si no hay GPS (PC, o adentro de casa) se activa un panel con dos sliders: error
+de distancia (0 a 15 m) y error de angulo (-45 a +45). Movelos para simular donde
+"quedaste parado" y toca MARCAR LLEGADA para ver el flujo completo de puntaje.
+Sirve para conocer el juego, no para entrenar de verdad.
 
-## 9. Modulo S "Donde quedo mi casa"
-
-El mas parecido a volver al hotel de memoria. GPS + brujula reales.
-
-1. Parate en un punto de partida reconocible y tocá **Marcar inicio y empezar**
-   (acepta permisos de ubicacion y brujula).
-2. **Caminá** en cualquier direccion: la app cuenta metros desde el inicio y a los
-   40-150 m vibra y grita PARADA.
-3. Fase parada: mirá el **gauge** (la brujula en pantalla: aguja que gira segun
-   hacia donde apunta el piezo del telefono). Girá sobre vos mismo hasta apuntar
-   de vuelta al punto de partida. Cuando la desviacion baja de 15 grados la linea
-   se pone verde: DENTRO DEL MARGEN.
-4. Tocá **Fijar rumbo**. Puntaje: 5 grados o menos = 100 pts, 15 o menos = 75.
-5. Feedback: "EL INICIO QUEDO SO 215 grados a 87 m". 5 rondas, promedio final.
-
-Chequeo rapido de calibracion: antes de jugar, girá el telefono mirando el gauge;
-apuntando al norte debe marcar ~000, al este ~090. Si marca otra cosa, recalibrá
-con movimiento en forma de 8 o revisa que no haya imanes/carcasa metalica cerca.
+Consejos: calibra tu paso midiendo 10 pasos en la vereda; camina con paso parejo;
+los giros de 90 hacelos con el cuerpo entero, no solo con los pies.
 
 ---
 
-## 10. Modulo O "Rotacion 3D de Hitos"
+## 9. Modulo S "Donde quedo mi casa" (AFUERA, con GPS + brujula)
+
+Para que sirve: saber VOLVER. Es el mas parecido a salir del hotel a pasear y
+volver sin mapa. El Modulo 2 mide si sabes llegar; este mide si sabes regresar.
+
+Como es por dentro: marcas un inicio, caminas libre en cualquier direccion
+(40 a 150 m, la app elige una distancia al azar por ronda), la app vibra y grita
+PARADA, y tenes que apuntar con el telefono hacia donde crees que quedo el
+inicio. La app compara tu punteria con el rumbo real y te da la desviacion.
+
+### Paso a paso
+
+1. Parate en un punto reconocible (tu puerta, un kiosco) y toca
+   **Marcar inicio y empezar**. Acepta ubicacion y, en iPhone, el permiso de
+   brujula (Apple lo exige con boton).
+2. **Camina** en cualquier direccion, sin mirar mapas. La app cuenta los metros
+   en numeros grandes. NO hace falta mirar la pantalla: cuando llegues, vibra
+   y muestra PARADA (si la tenes en segundo plano y diste permiso, manda
+   notificacion; igual conviene llevarla con pantalla prendida porque el
+   navegador puede pausar el GPS en fondo). Si sentis que ya estas lejos, toca
+   **Ya estoy lejos, medir** para frenar vos.
+3. Fase parada: agarra el celu con las dos manos, horizontal, y apunta con el
+   borde de arriba hacia donde crees que esta el inicio, como si el celu fuera
+   una flecha. Gira tu cuerpo entero, no solo el brazo. La brujula en pantalla
+   (gauge) muestra tu rumbo en vivo en grados y cardinal, y la desviacion:
+   si baja de 15 grados se pone verde (DENTRO DEL MARGEN).
+4. Toca **Fijar rumbo**. Puntaje: 5 grados o menos = 100 pts, 15 o menos = 75,
+   mas = 0. Feedback: "EL INICIO QUEDO SO 215 grados a 87 m".
+5. Son 5 rondas; cada "Seguir caminando" arranca desde donde estas. Al final ves
+   el promedio de desviacion y tu record.
+
+Truco honesto: la pantalla muestra la desviacion en vivo, asi que podrias
+"acomodarla" hasta el verde. Para entrenar de verdad, apunta primero a ojo y
+recien despues mira la pantalla para confirmar y fijar.
+
+Calibracion: antes de jugar, gira el telefono mirando el gauge; apuntando al
+norte debe marcar cerca de 000, al este 090. Si marca otra cosa, hace ochos en
+el aire con el celu, aleja imanes, fundas magneticas y parlantes. Si a los
+4 segundos no hay brujula, aparece el modo simulacion (slider de 0 a 359).
+
+---
+
+## 10. Modulo O "Rotacion 3D de Hitos" (EN CASA, con internet)
+
+Para que sirve: reconocer un lugar cuando lo ves desde el otro lado. Cura el
+sindrome de "esta calle no la reconozco al volver": de ida memorizas una fachada
+y a la vuelta, desde atras, todo parece distinto.
 
 Escena 3D del barrio con edificios reales de OpenStreetMap (sin API key).
+Necesita internet para descargar edificios y calles; necesita WebGL.
 
-1. Tocá Empezar: baja los edificios y calles de la zona de tu ancla HITO
-   (o El Obelisco si no hay viaje).
-2. La camara mira el barrio desde uno de los 4 lados (N/E/S/O, al azar, sin poder
-   moverla). Mirá bien los detalles.
-3. Abajo aparecen **4 capturas**: elegi cual es la vista desde el **lado opuesto**
-   de la escena.
-4. Al responder, la escena gira animada hacia la vista correcta para comparar.
-   Acierto = +100 pts. 5 rondas.
+1. Toca Empezar: baja los edificios y calles alrededor de tu ancla HITO (si no
+   marcaste hito, usa otra ancla al azar; si no hay viaje, usa El Obelisco).
+   La barra avisa cuantos edificios y calles cargo.
+2. La camara mira el barrio inclinada (pitch 60, zoom 15.3) desde uno de los 4
+   lados (N/E/S/O, al azar). La etiqueta dice ej. "VISTA DESDE EL N". No la
+   podes mover: solo mirarla. Fijate en el CONJUNTO (que torre tapa a cual,
+   donde dobla la calle), no en un edificio suelto.
+3. Abajo aparecen **4 capturas**: la vista opuesta (correcta), la misma que ves,
+   y las dos de costado. Estan mezcladas con letras A-D. Elegi cual es la vista
+   desde el **lado opuesto**.
+4. Al responder, la escena gira animada hasta la vista correcta para que compares.
+   Acierto = +100 pts. Son 5 rondas.
 
-Nota: necesita datos de edificios cargados en OSM para tu barrio. En zonas bien
-mapeadas funciona perfecto; en zonas vacias puede haber pocas torres.
+Nota: necesita edificios cargados en OSM para tu barrio. En zonas bien mapeadas
+funciona perfecto; en zonas vacias puede haber pocas torres. Si Overpass no
+responde, prueba con otro momento: rota entre 5 espejos solo.
 
 ---
 
