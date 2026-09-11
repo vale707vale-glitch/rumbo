@@ -2,7 +2,7 @@
   "use strict";
 
   var RONDA_MAX = 5;
-  var FRACCION_LINEA = 0.45;
+  var FRACCION_LINEA = 0.55;
 
   var viaje = null;
   var map = null;
@@ -45,15 +45,27 @@
     var o = pregunta.origen, d = pregunta.destino;
     var lat = o.lat + (d.lat - o.lat) * FRACCION_LINEA;
     var lng = o.lng + (d.lng - o.lng) * FRACCION_LINEA;
+    // Halo oscuro para contraste contra cualquier fondo o calle
     L.polyline([[o.lat, o.lng], [lat, lng]],
-      { color: "#c9a227", weight: 3, dashArray: "6 6", opacity: 0.95 }).addTo(capaLinea);
+      { color: "#0b2539", weight: 7, opacity: 0.85, pane: "lineaPane" }).addTo(capaLinea);
+    // Linea punteada visible en color naranja nautico
+    L.polyline([[o.lat, o.lng], [lat, lng]],
+      { color: "#e67e22", weight: 4, dashArray: "8 6", opacity: 1, pane: "lineaPane" }).addTo(capaLinea);
+    // Punto donde se corta la linea para que sea inconfundible
+    L.circleMarker([lat, lng],
+      { radius: 5, color: "#0b2539", fillColor: "#e67e22", fillOpacity: 1, weight: 2, pane: "lineaPane" }).addTo(capaLinea);
   }
 
   function lineaCompleta() {
     capaLinea.clearLayers();
+    var o = pregunta.origen, d = pregunta.destino;
     L.polyline(
-      [[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]],
-      { color: "#c9a227", weight: 3, dashArray: "6 6", opacity: 0.95 }
+      [[o.lat, o.lng], [d.lat, d.lng]],
+      { color: "#0b2539", weight: 7, opacity: 0.85, pane: "lineaPane" }
+    ).addTo(capaLinea);
+    L.polyline(
+      [[o.lat, o.lng], [d.lat, d.lng]],
+      { color: "#2e8b57", weight: 4, dashArray: "8 6", opacity: 1, pane: "lineaPane" }
     ).addTo(capaLinea);
   }
 
@@ -103,6 +115,10 @@
     if (!map) {
       map = L.map("mapa1", { zoomControl: false, attributionControl: true })
         .setView(viaje.centro, viaje.zoom);
+      if (!map.getPane("lineaPane")) {
+        map.createPane("lineaPane");
+        map.getPane("lineaPane").style.zIndex = 650;
+      }
       RUMBO.tileSkeleton().addTo(map);
       if (viaje.esqueleto) RUMBO.dibujarEsqueleto(map, viaje.esqueleto.calles);
       capaAnclas = L.layerGroup().addTo(map);
@@ -114,12 +130,12 @@
 
     try {
       var pts = viaje.anclas.map(function (a) { return [a.lat, a.lng]; });
-      map.fitBounds(L.latLngBounds(pts).pad(0.3));
+      map.fitBounds(L.latLngBounds(pts), { padding: [36, 36], maxZoom: 16 });
     } catch (e) {
       try {
         map.fitBounds(L.latLngBounds(
           [[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]]
-        ).pad(0.35));
+        ), { padding: [40, 40], maxZoom: 16 });
       } catch (err) {}
     }
 

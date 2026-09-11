@@ -288,6 +288,13 @@ C:\Users\roros\Documents\rumbo\
   - En `modulob.js`: encuadrar todas las anclas con `fitBounds` para que el jugador pueda ver todas
     las opciones y prolongar la linea mentalmente.
   - SW y `base.js` actualizados a `v34`.
+- Sesion v35 (sep 2026): Visibilidad de la linea punteada en Modo B.
+  La linea punteada original (3 px dorado `#c9a227`, 45% de distancia) quedaba oculta debajo de los pines
+  (Leaflet `markerPane` z-index 600 vs `overlayPane` 400) o tapada por las calles oscuras.
+  Solucion: pane dedicado `lineaPane` (z-index 650), doble trazo con halo navy de alto contraste (`weight: 7`)
+  + linea punteada naranja nautico (`#e67e22`, `weight: 4`), fraccion extendida al 55%, punto de corte visible
+  (`L.circleMarker`) donde se interrumpe la linea, y encuadre con padding en pixeles (`padding: [36, 36], maxZoom: 16`).
+  SW en `rumbo-v35`.
 
 - Sesion v20-v34 (sep 2026): CARTO `light_nolabels` empezo a exigir API key
   (verificado: el tile devuelve "API KEY REQUIRED"). Esqueleto sin raster:
