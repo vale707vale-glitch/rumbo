@@ -336,6 +336,7 @@ a { color: var(--navy-3); }
 
 /* ---------- Modulo 1: El Punto Ciego ---------- */
 .modulo1 {
+  width: 100%;
   max-width: 560px;
   margin: 0 auto;
   padding: 24px 16px 40px;
@@ -355,6 +356,7 @@ a { color: var(--navy-3); }
 
 .mapa-wrap {
   position: relative;
+  width: 100%;
   margin: 0 auto;
   max-width: 560px;
   height: 62vh;
@@ -563,6 +565,7 @@ a { color: var(--navy-3); }
 
 /* ---------- Modo B y Modo C ---------- */
 .modulob {
+  width: 100%;
   max-width: 560px;
   margin: 0 auto;
   padding: 24px 16px 40px;
@@ -623,4 +626,5 @@ a { color: var(--navy-3); }
   .compas-modo { gap: 6px; padding: 8px; }
   .compas-modo .lectura { font-size: 16px; }
   #mapa { flex: 1 1 auto; height: auto; min-height: 240px; }
+  .mapa-wrap { height: 50vh; min-height: 280px; }
 }

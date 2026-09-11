@@ -149,6 +149,12 @@
     pregunta = generarPregunta();
     respondida = false;
 
+    setFase("ninguna");
+    var avanzada = ronda >= RONDA_MAX - 2;
+    pregunta.avanzada = avanzada;
+    $("banner-rotado").hidden = !avanzada;
+    mostrarMapa(true, avanzada);
+
     if (!map) {
       map = L.map("mapa1", { zoomControl: false, attributionControl: true })
         .setView(viaje.centro, viaje.zoom);
@@ -160,11 +166,6 @@
     capaLinea.clearLayers();
     dibujarAnclas();
 
-    setFase("ninguna");
-    var avanzada = ronda >= RONDA_MAX - 2;
-    pregunta.avanzada = avanzada;
-    $("banner-rotado").hidden = !avanzada;
-    mostrarMapa(true, avanzada);
     var nOk = encuadrar(viaje.anclas.map(function (a) { return [a.lat, a.lng]; }));
     var esq = viaje.esqueleto;
     var nCalles = (esq && esq.calles) ? esq.calles.length : 0;

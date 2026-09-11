@@ -97,6 +97,9 @@
     pregunta.avanzada = ronda >= RONDA_MAX - 2;
     respondida = false;
 
+    $("banner-rotado").hidden = !pregunta.avanzada;
+    mostrarMapa(true, pregunta.avanzada);
+
     if (!map) {
       map = L.map("mapa1", { zoomControl: false, attributionControl: true })
         .setView(viaje.centro, viaje.zoom);
@@ -109,13 +112,16 @@
     dibujarAnclas();
     lineaParcial();
 
-    $("banner-rotado").hidden = !pregunta.avanzada;
-    mostrarMapa(true, pregunta.avanzada);
     try {
-      map.fitBounds(L.latLngBounds(
-        [[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]]
-      ).pad(0.35));
-    } catch (e) {}
+      var pts = viaje.anclas.map(function (a) { return [a.lat, a.lng]; });
+      map.fitBounds(L.latLngBounds(pts).pad(0.3));
+    } catch (e) {
+      try {
+        map.fitBounds(L.latLngBounds(
+          [[pregunta.origen.lat, pregunta.origen.lng], [pregunta.destino.lat, pregunta.destino.lng]]
+        ).pad(0.35));
+      } catch (err) {}
+    }
 
     actualizarUI();
     mostrarPregunta();

@@ -273,25 +273,30 @@ C:\Users\roros\Documents\rumbo\
 
 ## Roadmap pendiente
 
-- PENDIENTE (sigue mañana): Modulo 1 no muestra el esqueleto en el celu
-  (solo cronometro + una linea), con datos presentes (7 anclas, 244 calles).
-  Intentado sin exito: encuadrar anclas con fitBounds (v21), filtrar coords
-  invalidas null/0,0/fuera de rango (v28), enfocar el grupo ignorando lejanos
-  (v30), aviso de esqueleto de otra zona o parcial con link a Modo Viaje
-  (v31-v32), cronometro chico en esquina (v25), cartel diagnostico
-  "N/M ANCLAS · K CALLES · zZ · vV" (v24-v29). Tambien se arreglo de paso:
-  origen y destino siempre con distinto nombre (v27). Hipotesis abiertas:
-  esqueleto regenerado con las anclas fuera de pantalla (bbox no las cubre),
-  anclas lejanas validas, o calles poco visibles. Proximo paso: pedir texto
-  exacto del cartel y captura, y regenerar con las anclas en pantalla.
-- Sesion v20-v33 (sep 2026): CARTO `light_nolabels` empezo a exigir API key
+- SOLUCIONADO (v34): Modulo 1 y Modo B mostraban solo una linea vertical en lugar del mapa.
+  Causa raiz: `.mapa-wrap` era un flex item dentro de `.modulo1` / `.modulob` con `margin: 0 auto;`
+  y sin `width: 100%`. En flexbox, los margenes automaticos en el eje transversal anulan
+  `align-self: stretch` y hacen que el elemento colapse a su ancho intrinseco (`fit-content`).
+  Como todos los hijos de `.mapa-wrap` (`#mapa1`, `#contador`, banners) tienen `position: absolute`,
+  el ancho intrinseco era 0 px. Los 2 px de borde izquierdo y derecho de `#mapa1` colapsaban a 4 px
+  en total en el centro de la pantalla, viendose como "una linea vertical" y dejando el mapa con ancho 0.
+  Solucion:
+  - `width: 100%` en `.mapa-wrap`, `.modulo1` y `.modulob`.
+  - Altura responsive `.mapa-wrap { height: 50vh; min-height: 280px; }` en `@media (max-width: 560px)`.
+  - En `modulo1.js` y `modulob.js`: hacer visible el contenedor antes de instanciar Leaflet para
+    que `L.map` nazca con dimensiones reales de pantalla y no requiera esperar un reflow.
+  - En `modulob.js`: encuadrar todas las anclas con `fitBounds` para que el jugador pueda ver todas
+    las opciones y prolongar la linea mentalmente.
+  - SW y `base.js` actualizados a `v34`.
+
+- Sesion v20-v34 (sep 2026): CARTO `light_nolabels` empezo a exigir API key
   (verificado: el tile devuelve "API KEY REQUIRED"). Esqueleto sin raster:
   fondo papel + calles Overpass (v20). Modo A movil: panel 45%, brujula
   150 px, Confirmar/Siguiente en pastilla flotante (v22/v31/v33), fix de
   "000&deg;" literal (v22), auto-scroll del panel (v23). `vercel.json`: sw.js
   con `max-age=0, must-revalidate` (los celu quedaban con version vieja).
   Sello `RUMBO.VER` visible en el cartel del Modulo 1 para diagnosticar
-  cache (v26+). SW hoy en `rumbo-v33`.
+  cache (v26+). Fix definitivo de linea vertical en Modulo 1 y Modo B (v34). SW hoy en `rumbo-v34`.
 
 - Los 4 modulos de la rosa (N/E/S/O) + Modo Viaje + Modo A + Modo B + Modo C
   estan completos. El alcance del doc original esta cerrado.
