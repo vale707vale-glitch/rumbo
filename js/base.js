@@ -120,12 +120,197 @@
     return { lat: la2 * 180 / Math.PI, lng: lo2 * 180 / Math.PI };
   }
 
+  var CLAVE_VIAJE = "rumbo_viaje";
+  var CLAVE_VIAJES = "rumbo_viajes";
+  var CLAVE_ACTIVO = "rumbo_activo";
+
+  function genId() {
+    return "v" + Date.now().toString(36) + Math.floor(Math.random() * 1296).toString(36);
+  }
+
+  function leerTodos() {
+    try {
+      return JSON.parse(localStorage.getItem(CLAVE_VIAJES) || "{}") || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function guardarTodos(obj) {
+    try { localStorage.setItem(CLAVE_VIAJES, JSON.stringify(obj)); } catch (e) {}
+  }
+
+  function leerActivoId() {
+    try { return localStorage.getItem(CLAVE_ACTIVO) || null; } catch (e) { return null; }
+  }
+
+  function setActivoId(id) {
+    try { localStorage.setItem(CLAVE_ACTIVO, id); } catch (e) {}
+  }
+
+  function migrarLegado() {
+    var todos = leerTodos();
+    if (Object.keys(todos).length) return todos;
+    var legado = null;
+    try { legado = JSON.parse(localStorage.getItem(CLAVE_VIAJE) || "null"); } catch (e) {}
+    if (legado) {
+      var id = genId();
+      todos[id] = legado;
+      guardarTodos(todos);
+      setActivoId(id);
+    }
+    return todos;
+  }
+
   function leerViaje() {
     try {
-      return JSON.parse(localStorage.getItem("rumbo_viaje") || "null");
+      var todos = migrarLegado();
+      var ids = Object.keys(todos);
+      if (ids.length) {
+        var aid = leerActivoId();
+        if (aid && todos[aid]) return todos[aid];
+        setActivoId(ids[0]);
+        return todos[ids[0]];
+      }
+      return JSON.parse(localStorage.getItem(CLAVE_VIAJE) || "null");
     } catch (e) {
       return null;
     }
+  }
+
+  function guardarViaje(viaje) {
+    var todos = migrarLegado();
+    var aid = leerActivoId();
+    if (!aid || !todos[aid]) {
+      aid = genId();
+      setActivoId(aid);
+    }
+    todos[aid] = viaje;
+    guardarTodos(todos);
+    try { localStorage.setItem(CLAVE_VIAJE, JSON.stringify(viaje)); } catch (e) {}
+    return aid;
+  }
+
+  function listarViajes() {
+    var todos = migrarLegado();
+    return Object.keys(todos).map(function (id) {
+      var v = todos[id] || {};
+      return {
+        id: id,
+        nombre: v.nombre || "Viaje",
+        nAnclas: (v.anclas || []).length,
+        tieneEsqueleto: !!(v.esqueleto && v.esqueleto.calles && v.esqueleto.calles.length)
+      };
+    });
+  }
+
+  function crearViaje(nombre, centro, zoom) {
+    var todos = migrarLegado();
+    var id = genId();
+    var v = { nombre: nombre || "Nuevo viaje", centro: centro || null, zoom: zoom || 14, bloq: false, anclas: [], esqueleto: null };
+    todos[id] = v;
+    guardarTodos(todos);
+    setActivoId(id);
+    try { localStorage.setItem(CLAVE_VIAJE, JSON.stringify(v)); } catch (e) {}
+    return id;
+  }
+
+  function activarViaje(id) {
+    var todos = migrarLegado();
+    if (!todos[id]) return null;
+    setActivoId(id);
+    try { localStorage.setItem(CLAVE_VIAJE, JSON.stringify(todos[id])); } catch (e) {}
+    return todos[id];
+  }
+
+  function borrarViaje(id) {
+    var todos = migrarLegado();
+    if (!todos[id]) return false;
+    if (Object.keys(todos).length <= 1) return false;
+    delete todos[id];
+    guardarTodos(todos);
+    var aid = leerActivoId();
+    if (aid === id) {
+      var resto = Object.keys(todos)[0];
+      setActivoId(resto);
+      try { localStorage.setItem(CLAVE_VIAJE, JSON.stringify(todos[resto])); } catch (e) {}
+    }
+    return true;
+  }
+
+  function renombrarViaje(id, nombre) {
+    var todos = migrarLegado();
+    if (!todos[id]) return false;
+    todos[id].nombre = nombre;
+    guardarTodos(todos);
+    if (leerActivoId() === id) {
+      try { localStorage.setItem(CLAVE_VIAJE, JSON.stringify(todos[id])); } catch (e) {}
+    }
+    return true;
+  }
+
+  function duplicarViaje(id) {
+    var todos = migrarLegado();
+    if (!todos[id]) return null;
+    var nid = genId();
+    var copia = JSON.parse(JSON.stringify(todos[id]));
+    copia.nombre = (copia.nombre || "Viaje") + " (copia)";
+    todos[nid] = copia;
+    guardarTodos(todos);
+    return nid;
+  }
+
+  function viajeValido(v) {
+    if (!v || typeof v !== "object") return false;
+    if (typeof v.nombre !== "string") return false;
+    if (!Array.isArray(v.anclas)) return false;
+    for (var i = 0; i < v.anclas.length; i++) {
+      var a = v.anclas[i];
+      if (!a || typeof a.lat !== "number" || typeof a.lng !== "number") return false;
+      if (!TIPOS[a.tipo]) return false;
+    }
+    if (v.esqueleto !== null && v.esqueleto !== undefined) {
+      if (typeof v.esqueleto !== "object" || !Array.isArray(v.esqueleto.calles)) return false;
+    }
+    return true;
+  }
+
+  function exportarRespaldo() {
+    var todos = migrarLegado();
+    return { app: "rumbo", formato: 1, fecha: new Date().toISOString(), activo: leerActivoId(), viajes: todos };
+  }
+
+  function importarRespaldo(datos) {
+    var todos = migrarLegado();
+    var importados = 0;
+    function agregar(v) {
+      if (!viajeValido(v)) return false;
+      var nid = genId();
+      var copia = JSON.parse(JSON.stringify(v));
+      todos[nid] = copia;
+      importados++;
+      return nid;
+    }
+    if (datos && datos.viajes && typeof datos.viajes === "object") {
+      Object.keys(datos.viajes).forEach(function (k) { agregar(datos.viajes[k]); });
+    } else if (Array.isArray(datos)) {
+      datos.forEach(agregar);
+    } else if (viajeValido(datos)) {
+      agregar(datos);
+    } else {
+      return { ok: false, importados: 0 };
+    }
+    if (!importados) return { ok: false, importados: 0 };
+    guardarTodos(todos);
+    if (!leerActivoId()) {
+      var primero = Object.keys(todos)[0];
+      setActivoId(primero);
+    }
+    var aid = leerActivoId();
+    if (aid && todos[aid]) {
+      try { localStorage.setItem(CLAVE_VIAJE, JSON.stringify(todos[aid])); } catch (e) {}
+    }
+    return { ok: true, importados: importados };
   }
 
   function enBbox(lat, lng, bbox) {
@@ -152,7 +337,7 @@
   }
 
   global.RUMBO = {
-    VER: "v35",
+    VER: "v38",
     TIPOS: TIPOS,
     PESOS: PESOS,
     tileOsm: tileOsm,
@@ -167,6 +352,17 @@
     distanciaEntre: distanciaEntre,
     destinoDesde: destinoDesde,
     leerViaje: leerViaje,
+    guardarViaje: guardarViaje,
+    listarViajes: listarViajes,
+    crearViaje: crearViaje,
+    activarViaje: activarViaje,
+    borrarViaje: borrarViaje,
+    renombrarViaje: renombrarViaje,
+    duplicarViaje: duplicarViaje,
+    leerActivoId: leerActivoId,
+    exportarRespaldo: exportarRespaldo,
+    importarRespaldo: importarRespaldo,
+    viajeValido: viajeValido,
     enBbox: enBbox,
     brujulaMapa: brujulaMapa
   };

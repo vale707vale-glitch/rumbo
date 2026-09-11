@@ -36,6 +36,25 @@
 
   <div class="mapa-layout" id="mapa-layout">
     <aside class="panel">
+      <h2>Mis mapas</h2>
+      <div class="campo">
+        <select id="sel-viaje" title="Elegi el mapa activo"></select>
+      </div>
+      <div class="fila-btns">
+        <button class="btn papel mini" id="btn-nuevo" title="Crear un mapa nuevo">Nuevo</button>
+        <button class="btn papel mini" id="btn-renombrar" title="Renombrar el mapa activo">Renombrar</button>
+        <button class="btn papel mini" id="btn-duplicar" title="Duplicar el mapa activo">Duplicar</button>
+        <button class="btn papel mini" id="btn-borrar" title="Borrar el mapa activo">Borrar</button>
+      </div>
+      <div class="hint">El mapa activo es el que usan los juegos y modulos.</div>
+      <div class="fila-btns">
+        <button class="btn papel mini" id="btn-exp-uno" title="Bajar el mapa activo en JSON">Exportar activo</button>
+        <button class="btn papel mini" id="btn-exp-todo" title="Bajar todos los mapas en JSON">Backup todo</button>
+        <button class="btn papel mini" id="btn-importar" title="Subir mapas desde JSON">Importar</button>
+        <input type="file" id="file-importar" accept=".json,application/json" hidden>
+      </div>
+      <div class="barra-estado" id="barra-importar"></div>
+
       <h2>Tu zona</h2>
       <div class="campo">
         <input type="text" id="buscar" placeholder="Buscar barrio o direccion (ej. Palermo, Buenos Aires)">
@@ -72,6 +91,12 @@
 
       <h2>Viaje</h2>
       <button class="btn" id="btn-guardar">Guardar viaje</button>
+      <button class="btn papel" id="btn-imprimir" style="margin-top:6px;">Imprimir / PDF</button>
+      <div id="hoja-print" hidden>
+        <h2 id="print-nombre">Mapa</h2>
+        <div id="print-meta" class="mono"></div>
+        <div id="print-anclas"></div>
+      </div>
       <a class="btn bronce" href="juego.html" style="text-align:center;text-decoration:none;margin-top:6px;">Jugar ahora (Modo A)</a>
       <div class="barra-estado" id="barra-guardar"></div>
     </aside>

@@ -107,7 +107,16 @@
 
   <script>
     var viaje = null;
-    try { viaje = JSON.parse(localStorage.getItem("rumbo_viaje") || "null"); } catch (e) {}
+    try {
+      var todos = JSON.parse(localStorage.getItem("rumbo_viajes") || "{}") || {};
+      var ids = Object.keys(todos);
+      if (ids.length) {
+        var aid = localStorage.getItem("rumbo_activo");
+        viaje = (aid && todos[aid]) ? todos[aid] : todos[ids[0]];
+      } else {
+        viaje = JSON.parse(localStorage.getItem("rumbo_viaje") || "null");
+      }
+    } catch (e) {}
     if (viaje && viaje.anclas) {
       document.getElementById("viaje-nombre").textContent = viaje.nombre;
       document.getElementById("viaje-datos").innerHTML =

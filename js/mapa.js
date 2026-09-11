@@ -15,9 +15,20 @@
   var tileOsm, tileSkeleton;
   var bloqueadas = false;
 
-  function guardar() {
-    var viaje = {
-      nombre: "Buenos Aires · " + zonaNombre(),
+  function viajeActual(nombreForzado) {
+    var nombre = nombreForzado || null;
+    if (!nombre) {
+      var guardado = null;
+      try { guardado = RUMBO.leerViaje(); } catch (e) {}
+      var auto = "Buenos Aires · " + zonaNombre();
+      if (guardado && guardado.nombre && guardado.nombre.indexOf("·") === -1) {
+        nombre = guardado.nombre;
+      } else {
+        nombre = auto;
+      }
+    }
+    return {
+      nombre: nombre,
       centro: map.getCenter(),
       zoom: map.getZoom(),
       bloq: bloqueadas,
@@ -26,9 +37,65 @@
       }),
       esqueleto: esqueletoData
     };
-    localStorage.setItem("rumbo_viaje", JSON.stringify(viaje));
+  }
+
+  function guardar() {
+    RUMBO.guardarViaje(viajeActual());
+    refrescarSelector();
     var b = document.getElementById("barra-guardar");
     if (b) { b.textContent = "Viaje guardado (" + new Date().toLocaleTimeString() + ")"; }
+  }
+
+  function refrescarSelector() {
+    var sel = document.getElementById("sel-viaje");
+    if (!sel) return;
+    var lista = RUMBO.listarViajes();
+    var activo = null;
+    try { activo = RUMBO.leerActivoId(); } catch (e) {}
+    sel.innerHTML = "";
+    lista.forEach(function (v) {
+      var o = document.createElement("option");
+      o.value = v.id;
+      o.textContent = v.nombre + " (" + v.nAnclas + ")";
+      if (v.id === activo) o.selected = true;
+      sel.appendChild(o);
+    });
+    var btnB = document.getElementById("btn-borrar");
+    if (btnB) btnB.disabled = lista.length <= 1;
+  }
+
+  function limpiarMapa() {
+    anclas.forEach(function (a) { try { map.removeLayer(a.marker); } catch (e) {} });
+    anclas = [];
+    capaEsqueleto.clearLayers();
+    esqueletoData = null;
+    if (marcadorBase) { try { map.removeLayer(marcadorBase); } catch (e) {} marcadorBase = null; }
+  }
+
+  function cargarViajeEnMapa(viaje) {
+    limpiarMapa();
+    bloqueadas = !!(viaje && viaje.bloq);
+    if (viaje && viaje.centro && viaje.zoom) {
+      try { map.setView(viaje.centro, viaje.zoom); } catch (e) {}
+    }
+    if (viaje && viaje.nombre && viaje.nombre.indexOf("·") !== -1) {
+      document.getElementById("buscar").value = viaje.nombre.split("·")[1].trim();
+    }
+    ((viaje && viaje.anclas) || []).forEach(function (d) {
+      var a = { tipo: d.tipo, nombre: d.nombre, lat: d.lat, lng: d.lng };
+      a.marker = crearMarcador(a);
+      a.marker.addTo(map);
+      anclas.push(a);
+    });
+    if (viaje && viaje.esqueleto && viaje.esqueleto.calles && viaje.esqueleto.calles.length) {
+      esqueletoData = viaje.esqueleto;
+      restaurarEsqueleto(viaje.esqueleto);
+      setModo("esqueleto");
+    } else {
+      setModo("normal");
+    }
+    aplicarBloqueo();
+    pintarAnclas();
   }
 
   function zonaNombre() {
@@ -277,27 +344,64 @@
     });
     document.getElementById("btn-esqueleto").insertAdjacentElement("afterend", btnToggle);
 
-    var viaje = RUMBO.leerViaje();
-    if (viaje) {
-      if (viaje.centro && viaje.zoom) map.setView(viaje.centro, viaje.zoom);
-      if (viaje.nombre && viaje.nombre.indexOf("·") !== -1) {
-        document.getElementById("buscar").value = viaje.nombre.split("·")[1].trim();
+    refrescarSelector();
+    cargarViajeEnMapa(RUMBO.leerViaje());
+
+    document.getElementById("sel-viaje").addEventListener("change", function () {
+      var nid = this.value;
+      guardar();
+      var v = RUMBO.activarViaje(nid);
+      cargarViajeEnMapa(v);
+      refrescarSelector();
+    });
+
+    document.getElementById("btn-nuevo").addEventListener("click", function () {
+      guardar();
+      var nombre = window.prompt("Nombre del nuevo mapa:", zonaNombre() || "Nuevo barrio");
+      if (nombre === null) return;
+      nombre = (nombre || "").trim() || "Nuevo barrio";
+      RUMBO.crearViaje(nombre, map.getCenter(), map.getZoom());
+      document.getElementById("buscar").value = nombre;
+      cargarViajeEnMapa(RUMBO.leerViaje());
+      refrescarSelector();
+      guardar();
+    });
+
+    document.getElementById("btn-renombrar").addEventListener("click", function () {
+      var actual = RUMBO.leerViaje();
+      var nombre = window.prompt("Renombrar mapa:", actual ? actual.nombre : "");
+      if (nombre === null) return;
+      nombre = (nombre || "").trim();
+      if (!nombre) return;
+      RUMBO.guardarViaje(viajeActual(nombre));
+      refrescarSelector();
+      var b = document.getElementById("barra-guardar");
+      if (b) { b.textContent = "Viaje guardado (" + new Date().toLocaleTimeString() + ")"; }
+    });
+
+    document.getElementById("btn-duplicar").addEventListener("click", function () {
+      guardar();
+      var nid = null;
+      try { nid = RUMBO.duplicarViaje(RUMBO.leerActivoId()); } catch (e) {}
+      if (nid) {
+        RUMBO.activarViaje(nid);
+        cargarViajeEnMapa(RUMBO.leerViaje());
+        refrescarSelector();
       }
-      (viaje.anclas || []).forEach(function (d) {
-        var a = { tipo: d.tipo, nombre: d.nombre, lat: d.lat, lng: d.lng };
-        a.marker = crearMarcador(a);
-        a.marker.addTo(map);
-        anclas.push(a);
-      });
-      if (viaje.esqueleto) {
-        esqueletoData = viaje.esqueleto;
-        restaurarEsqueleto(viaje.esqueleto);
-        setModo("esqueleto");
+    });
+
+    document.getElementById("btn-borrar").addEventListener("click", function () {
+      var lista = RUMBO.listarViajes();
+      if (lista.length <= 1) return;
+      var actual = RUMBO.leerViaje();
+      if (!window.confirm("Borrar '" + (actual ? actual.nombre : "") + "'?")) return;
+      var ok = false;
+      try { ok = RUMBO.borrarViaje(RUMBO.leerActivoId()); } catch (e) {}
+      if (ok) {
+        cargarViajeEnMapa(RUMBO.leerViaje());
+        refrescarSelector();
       }
-      pintarAnclas();
-    }
-    if (viaje && viaje.bloq) bloqueadas = true;
-    aplicarBloqueo();
+    });
 
     map.on("click", function (e) {
       if (marcadorBase) map.removeLayer(marcadorBase);
@@ -344,6 +448,87 @@
         { enableHighAccuracy: true, timeout: 10000 }
       );
     });
+
+    function descargar(nombre, texto) {
+      var blob = new Blob([texto], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = nombre;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    }
+
+    function nombreArchivo(base) {
+      return "rumbo-" + (base || "mapa").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".json";
+    }
+
+    document.getElementById("btn-exp-uno").addEventListener("click", function () {
+      guardar();
+      var v = RUMBO.leerViaje();
+      if (!v) return;
+      descargar(nombreArchivo(v.nombre), JSON.stringify(v, null, 2));
+    });
+
+    document.getElementById("btn-exp-todo").addEventListener("click", function () {
+      guardar();
+      descargar("rumbo-backup.json", JSON.stringify(RUMBO.exportarRespaldo(), null, 2));
+    });
+
+    document.getElementById("btn-importar").addEventListener("click", function () {
+      document.getElementById("file-importar").click();
+    });
+
+    document.getElementById("file-importar").addEventListener("change", function () {
+      var f = this.files && this.files[0];
+      var msg = document.getElementById("barra-importar");
+      if (!f) return;
+      var rd = new FileReader();
+      rd.onload = function () {
+        try {
+          var datos = JSON.parse(rd.result);
+          var res = RUMBO.importarRespaldo(datos);
+          if (!res.ok) throw new Error("formato");
+          guardar();
+          cargarViajeEnMapa(RUMBO.leerViaje());
+          refrescarSelector();
+          msg.textContent = "Importados " + res.importados + " mapa(s).";
+        } catch (e) {
+          msg.textContent = "Archivo invalido: no es un JSON de RUMBO.";
+        }
+      };
+      rd.readAsText(f);
+      this.value = "";
+    });
+
+    function refrescarHojaPrint() {
+      var v = viajeActual();
+      var pn = document.getElementById("print-nombre");
+      var pm = document.getElementById("print-meta");
+      var pa = document.getElementById("print-anclas");
+      if (pn) pn.textContent = v.nombre;
+      if (pm) pm.textContent = (modo === "esqueleto" ? "Esqueleto sin nombres" : "Mapa con nombres") +
+        " · " + v.anclas.length + " anclas · " +
+        (v.esqueleto && v.esqueleto.calles ? v.esqueleto.calles.length + " tramos" : "sin esqueleto") +
+        " · " + new Date().toLocaleString();
+      if (pa) {
+        pa.innerHTML = "";
+        v.anclas.forEach(function (a) {
+          var t = TIPOS[a.tipo] || { nombre: a.tipo };
+          var d = document.createElement("div");
+          d.className = "pa";
+          d.textContent = t.nombre + " · " + a.nombre + " · " + a.lat.toFixed(5) + ", " + a.lng.toFixed(5);
+          pa.appendChild(d);
+        });
+      }
+    }
+
+    document.getElementById("btn-imprimir").addEventListener("click", function () {
+      guardar();
+      refrescarHojaPrint();
+      window.print();
+    });
+    window.addEventListener("beforeprint", refrescarHojaPrint);
 
     document.getElementById("btn-esqueleto").addEventListener("click", generarEsqueleto);
     document.getElementById("btn-guardar").addEventListener("click", guardar);

@@ -221,6 +221,18 @@ a { color: var(--navy-3); }
   color: var(--tinta);
 }
 .campo input[type="text"]:focus { outline: 2px solid var(--bronce); }
+.campo select {
+  flex: 1;
+  font-family: var(--mono); font-size: 13px;
+  padding: 8px;
+  border: 1px solid var(--marco);
+  border-radius: 4px;
+  background: #fbf7ec;
+  color: var(--tinta);
+  max-width: 100%;
+}
+.fila-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn.mini { padding: 6px 9px; font-size: 11px; }
 
 .seleccion-tipo { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip {
@@ -627,4 +639,21 @@ a { color: var(--navy-3); }
   .compas-modo .lectura { font-size: 16px; }
   #mapa { flex: 1 1 auto; height: auto; min-height: 240px; }
   .mapa-wrap { height: 50vh; min-height: 280px; }
+}
+
+/* ---------- Impresion Modo Viaje ---------- */
+#hoja-print { display: none; }
+@media print {
+  .topbar a, .topbar .spacer, #btn-panel,
+  .panel .campo, .panel .fila-btns, .panel .hint,
+  .panel .seleccion-tipo, .panel .btn,
+  .panel .barra-estado, .panel .skeleton-info,
+  .panel .leyenda { display: none !important; }
+  .mapa-layout { display: block; height: auto; }
+  .mapa-layout.panel-cerrado .panel { display: block; }
+  .panel { width: 100%; border: none; overflow: visible; }
+  #mapa { height: 420px; }
+  #hoja-print { display: block !important; color: #000; }
+  #hoja-print .mono { font-family: var(--mono); font-size: 12px; }
+  #hoja-print .pa { font-size: 13px; padding: 2px 0; border-bottom: 1px dotted #999; }
 }
