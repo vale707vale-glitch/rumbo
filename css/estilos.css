@@ -257,7 +257,7 @@ a { color: var(--navy-3); }
 
 .skeleton-info { font-size: 13px; line-height: 1.5; }
 .skeleton-info .mono { font-size: 11px; }
-.barra-estado { font-family: var(--mono); font-size: 12px; color: var(--navy-3); min-height: 18px; }
+.barra-estado { font-family: var(--mono); font-size: 12px; color: var(--navy-3); min-height: 18px; overflow-wrap: anywhere; line-height: 1.4; max-height: 3.2em; overflow-y: auto; }
 .barra-estado.error { color: #a33; }
 
 .leyenda { font-size: 12px; display: flex; flex-direction: column; gap: 4px; }

@@ -96,6 +96,7 @@
     }
     aplicarBloqueo();
     pintarAnclas();
+    estado(viaje && viaje.nombre ? viaje.nombre : "");
   }
 
   function zonaNombre() {
@@ -428,7 +429,7 @@
       buscar(q, function (err, r) {
         if (err || !r) { estado("No se encontro. Prueba con mas datos.", true); return; }
         map.flyTo([parseFloat(r.lat), parseFloat(r.lon)], 15);
-        estado(r.display_name);
+        estado(String(r.display_name || "").split(",").slice(0, 2).join(","));
       });
     });
     document.getElementById("buscar").addEventListener("keydown", function (e) {
