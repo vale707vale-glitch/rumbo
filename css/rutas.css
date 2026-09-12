@@ -1,0 +1,100 @@
+/* Rutas - adaptacion carta nautica. Solo carga en rutas.html. */
+
+/* Layout reutiliza .mapa-layout de estilos.css; el contenedor lleva id="app" para el PDF. */
+#app.mapa-layout { align-items: stretch; }
+#app .panel { gap: 14px; }
+
+/* Mapa Leaflet de Rutas (id original "map" preservado para paridad JS). */
+#map { flex: 1; min-height: 300px; background: var(--paper-2); z-index: 0; }
+
+/* Conmutadores de modo: misma idea que .chip de Modo Viaje. */
+.mode-switcher, .sub-switcher { display: flex; gap: 6px; flex-wrap: wrap; }
+.mode-btn, .sub-btn {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 1px;
+  padding: 8px 10px; border-radius: 4px; border: 1px solid var(--marco);
+  background: var(--paper-2); color: var(--tinta); cursor: pointer; flex: 1;
+}
+.mode-btn.active, .sub-btn.active {
+  background: var(--navy); color: var(--bronce-claro); border-color: var(--bronce);
+}
+
+/* Formularios del panel: heredan .campo de estilos.css. */
+#app .panel label { display: block; margin-top: 10px; font-size: 13px; color: var(--tinta); font-weight: 600; }
+#app .panel input[type="text"], #app .panel input[type="number"], #app .panel select {
+  width: 100%; font-family: var(--mono); font-size: 13px; padding: 8px;
+  border: 1px solid var(--marco); border-radius: 4px; background: #fbf7ec; color: var(--tinta);
+  margin-top: 5px;
+}
+#app .panel input:focus, #app .panel select:focus { outline: 2px solid var(--bronce); }
+
+/* Botones: se usan clases .btn de estilos.css en el HTML. Ajustes menores. */
+#app .panel .btn { width: 100%; margin-top: 8px; }
+#app .panel .fila-btns .btn { width: auto; flex: 1; }
+.btn-show-menu, .btn-fullscreen {
+  font-family: var(--mono); font-size: 12px; padding: 6px 10px; border-radius: 4px;
+  border: 1px solid var(--bronce); background: var(--navy); color: var(--paper); cursor: pointer;
+}
+.btn-show-menu { position: absolute; top: 12px; right: 12px; z-index: 1001; display: none; }
+.btn-fullscreen { width: 100%; margin-bottom: 10px; }
+
+/* Pasos y paradas intermedias. */
+.step-container, .stop-container {
+  border: 1px solid var(--marco); border-radius: 5px; background: #fbf7ec;
+  padding: 10px; margin-bottom: 10px;
+}
+.step-container select, .step-container input { width: 100%; margin-bottom: 6px; }
+
+/* Servicios en ruta. */
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.checkbox-item {
+  flex: 1 1 45%; display: flex; align-items: center; gap: 8px; font-size: 13px;
+  background: #fbf7ec; border: 1px solid var(--marco); border-radius: 4px; padding: 8px; cursor: pointer;
+}
+.checkbox-item input { accent-color: var(--bronce); }
+
+/* Resultados e itinerario. */
+#infoRuta, #itinerarioRuta, #resultados {
+  margin-top: 12px; background: var(--navy); color: var(--paper);
+  border: 1px solid var(--bronce); padding: 12px; border-radius: 5px; display: none;
+}
+#infoRuta h3, #resultados h3 { font-family: var(--serif); color: var(--bronce-claro); margin: 0 0 8px; }
+#infoRuta p, #resultados p { font-size: 14px; margin: 6px 0; line-height: 1.5; }
+#itinerarioRuta { background: #fbf7ec; color: var(--tinta); max-height: 300px; overflow-y: auto; }
+#itinerarioRuta h3 { color: var(--navy); border-bottom: 2px solid var(--bronce); padding-bottom: 6px; }
+#itinerarioRuta ol { padding-left: 20px; }
+#itinerarioRuta li { margin-bottom: 8px; font-size: 14px; }
+.route-toggle { display: flex; gap: 8px; margin-bottom: 10px; }
+.route-toggle button { flex: 1; padding: 8px; font-size: 13px; border-radius: 4px; border: 1px solid var(--marco); background: var(--paper-2); cursor: pointer; }
+.route-toggle button.active-main { background: var(--navy); color: var(--paper); border-color: var(--bronce); }
+.route-toggle button.active-alt { background: var(--bronce); color: #241a0d; border-color: var(--bronce); }
+
+/* Buscador sobre el mapa. */
+.search-box {
+  position: absolute; top: 10px; left: 10px; z-index: 1000; background: var(--paper);
+  border: 1px solid var(--marco); padding: 5px; border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3); display: flex; gap: 5px;
+}
+.search-box input { border: 1px solid var(--marco); border-radius: 4px; padding: 6px; font-family: var(--mono); font-size: 13px; width: 180px; }
+.search-box button { width: auto; padding: 6px 10px; margin: 0; }
+
+.save-section { margin-top: 8px; border-top: 2px dashed var(--marco); padding-top: 12px; }
+.loader {
+  border: 4px solid var(--paper-2); border-top: 4px solid var(--bronce); border-radius: 50%;
+  width: 16px; height: 16px; animation: spin 2s linear infinite; display: inline-block; vertical-align: middle;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Ayuda plegada (manual de rumbo 2 resumido). */
+.ayuda { border: 1px dashed var(--marco); border-radius: 5px; padding: 10px; background: #fbf7ec; }
+.ayuda summary { font-family: var(--mono); font-size: 13px; color: var(--navy); cursor: pointer; }
+.ayuda .nota { border-left: 3px solid var(--bronce); padding-left: 9px; font-size: 13px; margin: 8px 0; }
+.ayuda ul { margin: 6px 0 6px 18px; font-size: 13px; line-height: 1.6; }
+
+.emoji-marker { background: none; border: none; }
+
+@media (max-width: 560px) {
+  #app.mapa-layout { flex-direction: column; }
+  #app .panel { width: 100%; max-height: 52%; border-right: none; border-bottom: 2px solid var(--marco); }
+  #map { flex: 1 1 auto; min-height: 260px; }
+  .search-box input { width: 130px; }
+}

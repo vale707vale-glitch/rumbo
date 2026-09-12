@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>RUMBO - Rutas</title>
+  <meta name="theme-color" content="#0b2539">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icono.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="stylesheet" href="css/rutas.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="titulo">RUMBO</div>
+    <div class="sub">RUTAS &middot; MAPA Y COMPARADOR</div>
+    <div class="spacer"></div>
+    <a href="index.html">Inicio</a>
+    <a href="juego.html">Jugar</a>
+    <a href="modulo1.html">Modulo 1</a>
+    <a href="modulo2.html">Modulo 2</a>
+    <a href="modulo3.html">Modulo 3</a>
+    <a href="modulo4.html">Modulo 4</a>
+    <a href="modulob.html">Modo B</a>
+    <a href="moduloc.html">Modo C</a>
+    <a href="mapa.html">Modo Viaje</a>
+    <a href="rutas.html" class="activo">Rutas</a>
+  </header>
+
+  <div class="estado">
+    <span id="estado-modo">RUTAS REALES POR CALLE</span>
+    <span id="estado-coord" class="mono">OSRM + VALHALLA</span>
+    <button id="btn-panel" title="Mostrar u ocultar el panel" onclick="togglePanel()">Panel</button>
+  </div>
+
+  <div id="app" class="mapa-layout">
+    <aside id="panel" class="panel">
+      <button class="btn-fullscreen" onclick="togglePanel()">Mapa</button>
+
+      <h2>Motor de ruteo</h2>
+      <div class="campo">
+        <select id="routing-engine" title="Elegi la filosofia de viaje">
+          <option value="osrm">Mas Rapida (OSRM) - Con Alternativas</option>
+          <option value="valhalla">Mas Corta (Valhalla) - Menos KM</option>
+        </select>
+      </div>
+
+      <div class="mode-switcher" style="margin-top:10px;">
+        <button class="mode-btn active" onclick="switchMode('ciudad', event)">Ciudad</button>
+        <button class="mode-btn" onclick="switchMode('nacional', event)">Ruta Nacional</button>
+      </div>
+
+      <div id="view-ciudad">
+        <div class="sub-switcher">
+          <button class="sub-btn active" onclick="switchCiudadTab('pasos', event)">Paso a Paso</button>
+          <button class="sub-btn" onclick="switchCiudadTab('itinerario', event)">Itinerario</button>
+        </div>
+
+        <div id="ciudad-pasos">
+          <label>Punto de Partida:</label>
+          <div class="campo">
+            <input type="text" id="partida" placeholder="Ej: Av. Cabildo 1000, CABA">
+          </div>
+          <div class="fila-btns">
+            <button class="btn papel mini" onclick="activatePinMode('partida')">Fijar Partida</button>
+          </div>
+
+          <label>Destino Final:</label>
+          <div class="campo">
+            <input type="text" id="destino" placeholder="Ej: Av. Corrientes 5000, CABA">
+          </div>
+          <div class="fila-btns">
+            <button class="btn papel mini" onclick="activatePinMode('destino')">Fijar Destino</button>
+          </div>
+
+          <h2>Pasos Intermedios (Opcional)</h2>
+          <div id="steps-container-ciudad"></div>
+          <div class="fila-btns">
+            <button class="btn papel mini" onclick="addStepCiudad()">+ Anadir Paso</button>
+          </div>
+        </div>
+
+        <div id="ciudad-itinerario" style="display:none;">
+          <div class="hint">Pone las esquinas o direcciones en orden. La app unira todo por las calles reales.</div>
+          <div id="stops-container-ciudad"></div>
+          <div class="fila-btns">
+            <button class="btn papel mini" onclick="addStopCiudadIti()">+ Anadir Parada</button>
+          </div>
+        </div>
+
+        <h2>Opciones</h2>
+        <label>Modo de transporte (para dibujar):</label>
+        <div class="campo">
+          <select id="transporte-ciudad">
+            <option value="foot">Caminando</option>
+            <option value="driving">En vehiculo</option>
+          </select>
+        </div>
+
+        <label>Velocidad promedio en auto (km/h):</label>
+        <div class="campo">
+          <input type="number" id="speed-driving" value="30" min="10" max="120" placeholder="Ej: 40">
+        </div>
+
+        <button class="btn bronce" onclick="drawCiudadRoute()">Dibujar Mi Ruta</button>
+        <button class="btn" onclick="compararRutasCiudad()">Comparar Rutas (Rapida vs Corta)</button>
+        <button class="btn papel" onclick="compareCiudadRoute()">Comparar con Ruta Optima</button>
+        <button class="btn papel" onclick="clearAll()">Limpiar Mapa</button>
+        <div class="fila-btns">
+          <button class="btn papel mini" onclick="verEnOSM()">Ver en OSM</button>
+          <button class="btn papel mini" onclick="verEnGoogle()">Ver en Google</button>
+        </div>
+
+        <div id="resultados"></div>
+      </div>
+
+      <div id="view-nacional" style="display:none;">
+        <label>Ciudad de Origen:</label>
+        <div class="campo">
+          <input type="text" id="origen-nac" placeholder="Ej: Cordoba, Argentina">
+        </div>
+
+        <div id="paradas-container-nac"></div>
+        <div class="fila-btns">
+          <button class="btn papel mini" onclick="addStopNacional()">+ Anadir Parada Intermedia</button>
+        </div>
+
+        <label>Ciudad de Destino:</label>
+        <div class="campo">
+          <input type="text" id="destino-nac" placeholder="Ej: Mendoza, Argentina">
+        </div>
+
+        <h2>Servicios en el camino</h2>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" id="checkFuel" checked onchange="toggleLayers()"> Combustible</label>
+          <label class="checkbox-item"><input type="checkbox" id="checkToll" checked onchange="toggleLayers()"> Peajes</label>
+          <label class="checkbox-item"><input type="checkbox" id="checkRest" onchange="toggleLayers()"> Descanso</label>
+        </div>
+
+        <button class="btn bronce" onclick="trazarRutaNacional()">Trazar Ruta Nacional</button>
+        <button class="btn" onclick="compararRutasNacionales()">Comparar Rutas (Rapida vs Corta)</button>
+        <button class="btn papel" onclick="clearAll()">Limpiar Mapa</button>
+        <div class="fila-btns">
+          <button class="btn papel mini" onclick="verEnOSM()">Ver en OSM</button>
+          <button class="btn papel mini" onclick="verEnGoogle()">Ver en Google</button>
+        </div>
+
+        <div id="infoRuta">
+          <h3>Resumen del Viaje</h3>
+          <div id="infoRutaContent"></div>
+          <p id="poisLoading" style="font-size:14px;"></p>
+        </div>
+      </div>
+
+      <div id="itinerarioRuta">
+        <h3>Indicaciones de Ruta</h3>
+        <div id="routeToggle" class="route-toggle" style="display:none;">
+          <button id="btnMainRoute" class="active-main" onclick="showItinerario('main')">Ruta Principal</button>
+          <button id="btnAltRoute" onclick="showItinerario('alt')">Alternativa</button>
+        </div>
+        <ol id="itinerarioLista"></ol>
+      </div>
+
+      <h2>Guardar y Exportar</h2>
+      <div class="save-section">
+        <div class="campo">
+          <input type="text" id="routeName" placeholder="Nombre del mapa/viaje">
+        </div>
+        <button class="btn" onclick="saveState()">Guardar Actual</button>
+        <div class="campo" style="margin-top:8px;">
+          <select id="savedRoutes" style="margin-top:8px;"></select>
+        </div>
+        <div class="fila-btns">
+          <button class="btn papel mini" onclick="loadState()">Cargar</button>
+          <button class="btn papel mini" onclick="deleteState()">Borrar</button>
+        </div>
+        <button class="btn papel" onclick="exportToPDF()" style="margin-top:6px;">Exportar a PDF</button>
+      </div>
+
+      <details class="ayuda">
+        <summary>Ayuda: como usar Rutas</summary>
+        <div class="nota"><b>Regla de oro de direcciones:</b> si una direccion con numero no aparece, proba sin el numero, revisa tildes y usa los botones de Fijar Partida/Destino para marcar a mano en el mapa.</div>
+        <ul>
+          <li><b>Motor:</b> Rapida (OSRM) prefiere avenidas y da alternativa; Corta (Valhalla) evita autopistas y peajes.</li>
+          <li><b>Ciudad / Paso a Paso:</b> partida, destino y pasos manuales por rumbo. Sin pasos, dibuja por calles reales.</li>
+          <li><b>Ciudad / Itinerario:</b> lista de paradas unidas por asfalto real.</li>
+          <li><b>Ruta Nacional:</b> origen, destino, paradas y servicios de combustible, peajes y descanso.</li>
+          <li><b>Comparar:</b> dibuja Rapida y Corta juntas con distancia y tiempo.</li>
+        </ul>
+      </details>
+    </aside>
+
+    <div id="map">
+      <button class="btn-show-menu" onclick="togglePanel()">Menu</button>
+      <div class="search-box">
+        <input type="text" id="mapSearch" placeholder="Buscar lugar...">
+        <button class="btn papel mini" onclick="searchMap()">Buscar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="js/rutas.js?v=42"></script>
+</body>
+</html>

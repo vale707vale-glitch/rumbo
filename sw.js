@@ -1,7 +1,8 @@
-const CACHE = "rumbo-v39";
+const CACHE = "rumbo-v42";
 const BASE = [
   "index.html",
   "mapa.html",
+  "rutas.html",
   "juego.html",
   "modulo1.html",
   "modulo2.html",
@@ -10,6 +11,7 @@ const BASE = [
   "modulob.html",
   "moduloc.html",
   "css/estilos.css",
+  "css/rutas.css",
   "js/base.js",
   "js/mapa.js",
   "js/juego.js",
@@ -19,6 +21,7 @@ const BASE = [
   "js/modulo4.js",
   "js/modulob.js",
   "js/moduloc.js",
+  "js/rutas.js",
   "manifest.webmanifest"
 ];
 
