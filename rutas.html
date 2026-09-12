@@ -177,6 +177,12 @@
           <button class="btn papel mini" onclick="deleteState()">Borrar</button>
         </div>
         <button class="btn papel" onclick="exportToPDF()" style="margin-top:6px;">Exportar a PDF</button>
+        <div class="fila-btns">
+          <button class="btn papel mini" onclick="exportJSON()">Exportar JSON</button>
+          <button class="btn papel mini" onclick="document.getElementById('file-json').click()">Importar JSON</button>
+        </div>
+        <input type="file" id="file-json" accept=".json,application/json" hidden onchange="importarJSON(this)">
+        <div class="hint">El JSON sirve para pasar rutas a otro dispositivo o de backup. Se abre vivo, con internet.</div>
       </div>
 
       <details class="ayuda">
@@ -188,6 +194,7 @@
           <li><b>Ciudad / Itinerario:</b> lista de paradas unidas por asfalto real.</li>
           <li><b>Ruta Nacional:</b> origen, destino, paradas y servicios de combustible, peajes y descanso.</li>
           <li><b>Comparar:</b> dibuja Rapida y Corta juntas con distancia y tiempo.</li>
+          <li><b>JSON:</b> Exportar guarda la ruta en un archivo para backup o pasarla a otro celu; Importar la abre viva (con internet).</li>
         </ul>
       </details>
     </aside>

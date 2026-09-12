@@ -784,6 +784,76 @@ const map = L.map('map').setView([-34.6037, -58.3816], 5);
         } catch (e) { document.getElementById('poisLoading').innerText = "Error al buscar servicios."; }
     }
 
+    function estadoActual() {
+        let state = {
+            mode: currentMode,
+            ciudadTab: currentCiudadTab,
+            routingEngine: document.getElementById('routing-engine').value
+        };
+        if (currentMode === 'ciudad') {
+            state.partida = document.getElementById('partida').value;
+            state.destino = document.getElementById('destino').value;
+            state.transporte = document.getElementById('transporte-ciudad').value;
+            state.speedDriving = document.getElementById('speed-driving').value;
+            state.steps = Array.from(document.querySelectorAll('#steps-container-ciudad .step-container')).map(s => ({
+                accion: s.querySelector('.accion').value, calle: s.querySelector('.calle').value,
+                cantidad: s.querySelector('.cantidad').value, unidad: s.querySelector('.unidad').value, rumbo: s.querySelector('.rumbo').value
+            }));
+            state.stopsIti = [];
+            for (let i = 1; i <= stopCounterCiudad; i++) {
+                const stopInput = document.getElementById(`stop_ciudad_${i}`);
+                if (stopInput && stopInput.value) state.stopsIti.push(stopInput.value);
+            }
+        } else {
+            state.origen = document.getElementById('origen-nac').value;
+            state.destino = document.getElementById('destino-nac').value;
+            state.checks = { fuel: document.getElementById('checkFuel').checked, toll: document.getElementById('checkToll').checked, rest: document.getElementById('checkRest').checked };
+            state.stops = [];
+            for (let i = 1; i <= stopCounterNac; i++) {
+                const stopInput = document.getElementById(`stop_nac_${i}`);
+                if (stopInput && stopInput.value) state.stops.push(stopInput.value);
+            }
+        }
+        return state;
+    }
+
+    function exportJSON() {
+        const state = estadoActual();
+        const base = (document.getElementById('routeName').value || 'ruta').trim() || 'ruta';
+        const blob = new Blob([JSON.stringify(state)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = base + '.json';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+    }
+
+    function importarJSON(input) {
+        const f = input.files && input.files[0];
+        if (!f) return;
+        const rd = new FileReader();
+        rd.onload = function() { cargarJSONTexto(rd.result, f.name); };
+        rd.readAsText(f);
+        input.value = '';
+    }
+
+    function cargarJSONTexto(texto, nombreArchivo) {
+        let state = null;
+        try { state = JSON.parse(texto); } catch (e) { state = null; }
+        if (!state || (state.mode !== 'ciudad' && state.mode !== 'nacional')) {
+            alert("Ese archivo no es una ruta RUMBO.");
+            return;
+        }
+        let nombre = String(nombreArchivo || 'ruta').replace(/\.json$/i, '') || 'ruta';
+        if (localStorage.getItem('app_state_' + nombre) && !confirm('Ya existe "' + nombre + '". ¿Reemplazar?')) return;
+        localStorage.setItem('app_state_' + nombre, JSON.stringify(state));
+        loadSavedStates();
+        document.getElementById('savedRoutes').value = nombre;
+        loadState();
+        alert("¡Ruta importada!");
+    }
+
     function saveState() {
         const name = document.getElementById('routeName').value;
         if (!name) { alert("Poné un nombre para guardar."); return; }
