@@ -253,6 +253,7 @@ a { color: var(--navy-3); }
 .ancla .nombre { flex: 1; }
 .ancla .latlng { font-family: var(--mono); font-size: 10px; color: var(--tinta-suave); }
 .ancla .quitar { border: none; background: none; color: #a33; font-size: 15px; cursor: pointer; padding: 2px 4px; }
+.ancla .editar { border: 1px solid var(--marco); background: var(--paper-2); color: var(--navy); font-family: var(--mono); font-size: 11px; cursor: pointer; padding: 3px 8px; border-radius: 4px; }
 .vacio { font-family: var(--mono); font-size: 12px; color: var(--tinta-suave); font-style: italic; }
 
 .skeleton-info { font-size: 13px; line-height: 1.5; }

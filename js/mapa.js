@@ -90,10 +90,8 @@
     if (viaje && viaje.esqueleto && viaje.esqueleto.calles && viaje.esqueleto.calles.length) {
       esqueletoData = viaje.esqueleto;
       restaurarEsqueleto(viaje.esqueleto);
-      setModo("esqueleto");
-    } else {
-      setModo("normal");
     }
+    setModo("normal");
     aplicarBloqueo();
     pintarAnclas();
     estado(viaje && viaje.nombre ? viaje.nombre : "");
@@ -104,12 +102,23 @@
     return v ? v.split(",")[0] : "zona elegida";
   }
 
+  function contenidoPopup(a) {
+    var t = TIPOS[a.tipo] || TIPOS.hito;
+    return "<b>" + a.nombre + "</b><br><span class='mono'>" + t.nombre + "</span><br>" +
+      "lat " + a.lat.toFixed(5) + " lng " + a.lng.toFixed(5);
+  }
+
   function crearMarcador(a) {
     var m = L.marker([a.lat, a.lng], { icon: RUMBO.pinIcon(a.tipo), draggable: !bloqueadas });
-    var t = TIPOS[a.tipo];
-    m.bindPopup("<b>" + a.nombre + "</b><br><span class='mono'>" + t.nombre + "</span><br>" +
-      "lat " + a.lat.toFixed(5) + " lng " + a.lng.toFixed(5));
-    m.on("dragend", function () { guardar(); });
+    m.bindPopup(contenidoPopup(a));
+    m.on("dragend", function () {
+      var ll = m.getLatLng();
+      a.lat = ll.lat;
+      a.lng = ll.lng;
+      m.setPopupContent(contenidoPopup(a));
+      pintarAnclas();
+      guardar();
+    });
     return m;
   }
 
@@ -123,11 +132,12 @@
     anclas.forEach(function (a) {
       var fila = document.createElement("div");
       fila.className = "ancla";
-      var t = TIPOS[a.tipo];
+      var t = TIPOS[a.tipo] || TIPOS.hito;
       fila.innerHTML =
         '<span class="pto" style="background:' + t.color + '"></span>' +
         '<span class="nombre">' + a.nombre + "</span>" +
         '<span class="latlng">' + a.lat.toFixed(4) + ", " + a.lng.toFixed(4) + "</span>" +
+        '<button class="editar" title="Editar nombre o tipo">Editar</button>' +
         '<button class="quitar" title="Quitar">\u2715</button>';
       fila.querySelector(".quitar").addEventListener("click", function () {
         map.removeLayer(a.marker);
@@ -135,13 +145,59 @@
         pintarAnclas();
         guardar();
       });
+      fila.querySelector(".editar").addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        editarAncla(a);
+      });
       fila.addEventListener("click", function (ev) {
-        if (ev.target.className === "quitar") return;
+        if (ev.target.className === "quitar" || ev.target.className === "editar") return;
         map.setView(a.marker.getLatLng(), Math.max(map.getZoom(), 15));
         a.marker.openPopup();
       });
       document.getElementById("lista-anclas").appendChild(fila);
     });
+  }
+
+  function editarAncla(a) {
+    var ll = a.marker.getLatLng();
+    var opciones = Object.keys(TIPOS).map(function (k) {
+      return '<option value="' + k + '"' + (k === a.tipo ? " selected" : "") + ">" + TIPOS[k].nombre + "</option>";
+    }).join("");
+    var popup = L.popup({ autoClose: true, closeOnClick: false })
+      .setLatLng(ll)
+      .setContent(
+        '<div style="font-family:var(--sans)">' +
+        "<b>Editar ancla</b><br>" +
+        '<input type="text" id="edit-nombre-ancla" value="' + a.nombre.replace(/"/g, "&quot;") + '" ' +
+        'style="width:180px;padding:5px;margin:6px 0;font-family:var(--mono)">' +
+        '<select id="edit-tipo-ancla" style="width:180px;padding:5px;margin-bottom:6px;font-family:var(--mono)">' +
+        opciones + "</select>" +
+        '<button id="ok-edit-ancla" style="display:block;width:100%;padding:6px;cursor:pointer">Guardar cambios</button>' +
+        "</div>"
+      )
+      .openOn(map);
+    setTimeout(function () {
+      var inp = document.getElementById("edit-nombre-ancla");
+      var sel = document.getElementById("edit-tipo-ancla");
+      var btn = document.getElementById("ok-edit-ancla");
+      if (!inp || !sel || !btn) return;
+      inp.focus();
+      inp.select();
+      btn.addEventListener("click", function () {
+        var nuevoNombre = inp.value.trim() || a.nombre;
+        var nuevoTipo = sel.value && TIPOS[sel.value] ? sel.value : a.tipo;
+        a.nombre = nuevoNombre;
+        a.tipo = nuevoTipo;
+        try { a.marker.setIcon(RUMBO.pinIcon(a.tipo)); } catch (e) {}
+        a.marker.setPopupContent(contenidoPopup(a));
+        pintarAnclas();
+        guardar();
+        map.closePopup();
+      });
+      inp.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") btn.click();
+      });
+    }, 100);
   }
 
   function agregarAncla(latlng, tipo) {    var t = TIPOS[tipo];

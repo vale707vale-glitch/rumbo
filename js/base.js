@@ -4,6 +4,7 @@
   var TIPOS = {
     hotel:       { nombre: "Hotel",       color: "#1f6fb2", simbolo: "H" },
     subte:       { nombre: "Subte",       color: "#2e8b57", simbolo: "M" },
+    colectivo:   { nombre: "Autobus",     color: "#7d3c98", simbolo: "B" },
     restaurante: { nombre: "Restaurante", color: "#c0392b", simbolo: "R" },
     hito:        { nombre: "Hito",        color: "#c9a227", simbolo: "*" }
   };
