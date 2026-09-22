@@ -151,7 +151,7 @@
     }
     renderRuta();
     actualizarUI();
-    $("btn-parar").textContent = legIdx === legs.length - 1 ? "MARCAR LLEGADA" : "PAR&Eacute;";
+    $("btn-parar").textContent = legIdx === legs.length - 1 ? "MARCAR LLEGADA" : "PARE";
     $("btn-parar").disabled = false;
   }
 
@@ -162,7 +162,7 @@
     bearing0 = null;
     legStart = posInicio;
     setFase("caminar");
-    $("btn-parar").textContent = legs.length === 1 ? "MARCAR LLEGADA" : "PAR&Eacute;";
+    $("btn-parar").textContent = legs.length === 1 ? "MARCAR LLEGADA" : "PARE";
     $("btn-parar").disabled = false;
     renderRuta();
     actualizarUI();

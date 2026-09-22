@@ -187,7 +187,7 @@ C:\Users\roros\Documents\rumbo\
   - Ruta generada al azar: 2-3 tramos de 8-15 pasos, giros de +90/-90/180 grados.
     Largo de paso configurable (60/70/80 cm).
   - Flujo: marcar inicio (GPS) -> la ruta se muestra tramo a tramo con el actual
-    resaltado -> el usuario camina contando pasos y aprieta PAR&Eacute; (o
+    resaltado -> el usuario camina contando pasos y aprieta PARE (o
     MARCAR LLEGADA en el ultimo) -> la app mide.
   - Error: el punto estimado (dead reckoning) se calcula con `RUMBO.destinoDesde`
     anclado al rumbo real del primer tramo (medido por GPS) + los pasos/giros

@@ -56,10 +56,11 @@
 #infoRuta, #itinerarioRuta, #resultados {
   margin-top: 12px; background: var(--navy); color: var(--paper);
   border: 1px solid var(--bronce); padding: 12px; border-radius: 5px; display: none;
+  flex: 0 0 auto;
 }
 #infoRuta h3, #resultados h3 { font-family: var(--serif); color: var(--bronce-claro); margin: 0 0 8px; }
 #infoRuta p, #resultados p { font-size: 14px; margin: 6px 0; line-height: 1.5; }
-#itinerarioRuta { background: #fbf7ec; color: var(--tinta); max-height: 300px; overflow-y: auto; }
+#itinerarioRuta { background: #fbf7ec; color: var(--tinta); min-height: 200px; max-height: min(420px, 60vh); overflow-y: auto; resize: vertical; }
 #itinerarioRuta h3 { color: var(--navy); border-bottom: 2px solid var(--bronce); padding-bottom: 6px; }
 #itinerarioRuta ol { padding-left: 20px; }
 #itinerarioRuta li { margin-bottom: 8px; font-size: 14px; }
