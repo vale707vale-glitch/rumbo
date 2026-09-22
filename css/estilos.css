@@ -372,8 +372,8 @@ a { color: var(--navy-3); }
   width: 100%;
   margin: 0 auto;
   max-width: 560px;
-  height: 62vh;
-  min-height: 380px;
+  height: 68vh;
+  min-height: 420px;
 }
 #mapa1 { position: absolute; inset: 0; border: 2px solid var(--bronce); border-radius: 6px; background: var(--paper-2); }
 #mapa1.rotado180 { transform: rotate(180deg); }
@@ -392,12 +392,13 @@ a { color: var(--navy-3); }
   padding: 6px 14px; border-radius: 4px; z-index: 500;
 }
 .banner-datos {
-  position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
-  max-width: 92%;
+  width: 100%;
+  max-width: 560px;
+  margin: 8px auto 0;
   background: var(--navy); color: var(--bronce-claro);
   font-family: var(--mono); font-size: 11px; letter-spacing: 1px;
   padding: 6px 12px; border: 1px solid var(--bronce); border-radius: 4px;
-  z-index: 500; text-align: center;
+  text-align: center;
 }
 .banner-datos.warn { background: #a33; color: var(--paper); border-color: #a33; }
 .banner-datos a { color: inherit; font-weight: 700; }
@@ -639,7 +640,7 @@ a { color: var(--navy-3); }
   .compas-modo { gap: 6px; padding: 8px; }
   .compas-modo .lectura { font-size: 16px; }
   #mapa { flex: 1 1 auto; height: auto; min-height: 240px; }
-  .mapa-wrap { height: 50vh; min-height: 280px; }
+  .mapa-wrap { height: 58vh; min-height: 320px; }
 }
 
 /* ---------- Impresion Modo Viaje ---------- */
