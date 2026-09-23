@@ -14,6 +14,7 @@
   var esqueletoData = null;
   var tileOsm, tileSkeleton;
   var bloqueadas = false;
+  var crearAnclas = false;
 
   function viajeActual(nombreForzado) {
     var nombre = nombreForzado || null;
@@ -239,6 +240,13 @@
     }, 100);
   }
 
+  function aplicarCrear() {
+    var b = document.getElementById("btn-crear");
+    if (!b) return;
+    b.textContent = crearAnclas ? "Crear anclas: ON" : "Activar crear anclas";
+    b.classList.toggle("bronce", !crearAnclas);
+  }
+
   function aplicarBloqueo() {
     anclas.forEach(function (a) {
       if (!a.marker || !a.marker.dragging) return;
@@ -461,6 +469,7 @@
     });
 
     map.on("click", function (e) {
+      if (!crearAnclas) return;
       if (marcadorBase) map.removeLayer(marcadorBase);
       marcadorBase = L.circleMarker(e.latlng, {
         radius: 9, color: TIPOS[tipoActual].color, weight: 2, fillOpacity: 0.25,
@@ -589,6 +598,11 @@
 
     document.getElementById("btn-esqueleto").addEventListener("click", generarEsqueleto);
     document.getElementById("btn-guardar").addEventListener("click", guardar);
+    document.getElementById("btn-crear").addEventListener("click", function () {
+      crearAnclas = !crearAnclas;
+      aplicarCrear();
+    });
+    aplicarCrear();
     document.getElementById("btn-bloq").addEventListener("click", function () {
       bloqueadas = !bloqueadas;
       aplicarBloqueo();
