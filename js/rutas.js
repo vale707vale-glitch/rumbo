@@ -171,13 +171,13 @@ const map = L.map('map').setView([-34.6037, -58.3816], 5);
                     switch(type) {
                         case 'depart': inst = `Iniciar viaje en ${nombre}`; break;
                         case 'arrive': inst = `Llegar a destino (${nombre})`; break;
-                        case 'turn': inst = `Girar ${mod} hacia ${nombre}`; break;
+                        case 'turn': inst = (mod === 'recto' || !mod) ? `Seguir recto hacia ${nombre}` : `Girar ${mod} hacia ${nombre}`; break;
                         case 'new name': case 'continue': inst = `Continuar ${mod} por ${nombre}`; break;
                         case 'merge': inst = `Incorporarse ${mod} hacia ${nombre}`; break;
                         case 'on ramp': inst = `Tomar rampa de acceso hacia ${nombre}`; break;
                         case 'off ramp': inst = `Tomar salida hacia ${nombre}`; break;
                         case 'fork': inst = `Bifurcarse ${mod} hacia ${nombre}`; break;
-                        case 'end of road': inst = `Al final de la calle, girar ${mod} hacia ${nombre}`; break;
+                        case 'end of road': inst = (mod === 'recto' || !mod) ? `Al final de la calle, seguir recto hacia ${nombre}` : `Al final de la calle, girar ${mod} hacia ${nombre}`; break;
                         case 'roundabout': case 'rotary': inst = `En la rotonda, tomar salida hacia ${nombre}`; break;
                         case 'roundabout turn': inst = `En la rotonda, girar ${mod} hacia ${nombre}`; break;
                         default: inst = `Continuar hacia ${nombre}`;
